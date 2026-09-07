@@ -25,7 +25,7 @@
 //helper functions
 enum wxBuildInfoFormat { short_f, long_f };
 
-wxString wxBuildInfo(wxBuildInfoFormat format)
+static wxString wxBuildInfo(wxBuildInfoFormat format)
 {
     wxString wxbuild(wxVERSION_STRING);
     if (sizeof(int*) == 8) wxbuild << " 64-bit ";
@@ -61,8 +61,7 @@ MathPlotDemoFrame::MathPlotDemoFrame(wxWindow* parent, wxWindowID id)
 {
     (void) id; // Compiler happy
     //(*Initialize(MathPlotDemoFrame)
-    wxBoxSizer* BoxSizer1;
-    wxBoxSizer* BoxSizer2;
+    wxBoxSizer * BoxSizer2;
     wxMenu* Menu1;
     wxMenu* Menu3;
     wxMenuBar* MenuBar1;
@@ -105,7 +104,7 @@ MathPlotDemoFrame::MathPlotDemoFrame(wxWindow* parent, wxWindowID id)
     pDemo->SetSizer(BoxSizer2);
     AuiManager1->AddPane(pDemo, wxAuiPaneInfo().Name(_T("PaneName0")).DefaultPane().Caption(_("Demo")).CloseButton(false).Left().TopDockable(false).BottomDockable(false).RightDockable(false).MinSize(wxSize(140,-1)).Movable(false));
     pPlot = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-    BoxSizer1 = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *BoxSizer1 = new wxBoxSizer(wxVERTICAL);
     mPlot = new mpWindow(pPlot, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     mPlot->UpdateAll();
     mPlot->Fit();
@@ -655,7 +654,8 @@ void MathPlotDemoFrame::OnbMultiYAxisClick(wxCommandEvent &WXUNUSED(event))
   // Fit all and refresh display
   mPlot->Fit();
 
-  new wxTipWindow(this,
+
+  auto tip = wxTipWindow::New(this,
                   "Interact with individual axis by keeping mouse inside a specific axis and:\n"
                   " - Pan by holding right mouse button and moving up/down\n"
                   " - Zoom by holding left mouse button and moving up/down\n"
@@ -679,8 +679,9 @@ void MathPlotDemoFrame::OnbMovingObjectClick(wxCommandEvent &WXUNUSED(event))
     bmp.SetMaskColour(0, 0, 0);
     bmpLayer->SetBitmap(bmp, -40, -40, 120, 120);
   }
-  else
-    new wxTipWindow(this, "Please copy the image 'gridmap.png' to the executable's directory.", 500);
+  else {
+    wxTipWindow::New(this, "Please copy the image 'gridmap.png' to the executable's directory.", 500);
+  }
 
   mPlot->AddLayer(new mpCovarianceEllipse(0.4, 0.4, 0.2, 2, 32, wxT("Cov1")), false);
   mPlot->AddLayer(new mpCovarianceEllipse(0.2, 0.2, -0.1, 2, 32, wxT("Cov2")), false);

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="1">
+    <builddir>wxmathplot-cppcheck-build-dir</builddir>
+    <platform>win64</platform>
+    <analyze-all-vs-configs>false</analyze-all-vs-configs>
+    <check-headers>true</check-headers>
+    <check-unused-templates>true</check-unused-templates>
+    <inline-suppression>true</inline-suppression>
+    <max-ctu-depth>2</max-ctu-depth>
+    <max-template-recursion>100</max-template-recursion>
+    <defines>
+        <define name="__WIN32__"/>
+    </defines>
+    <paths>
+        <dir name="mathplot"/>
+    </paths>
+    <libraries>
+        <library>windows</library>
+        <library>wxwidgets</library>
+    </libraries>
+    <check-level-normal/>
+    <project-name>wxmathplot</project-name>
+</project>

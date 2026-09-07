@@ -32,7 +32,7 @@ class MathPlotDemoFrame: public wxFrame
     public:
 
         MathPlotDemoFrame(wxWindow* parent, wxWindowID id = -1);
-        virtual ~MathPlotDemoFrame();
+      ~MathPlotDemoFrame() override;
 
     private:
 
@@ -82,15 +82,15 @@ class MathPlotDemoFrame: public wxFrame
         wxTimer Timer;
         //*)
 
-        mpScaleX *bottomAxis = NULL;
-        mpScaleY *leftAxis = NULL;
-        void InitializePlot(void);
-        void CleanPlot(void);
+        mpScaleX *bottomAxis = nullptr;
+        mpScaleY *leftAxis = nullptr;
+        void InitializePlot();
+        void CleanPlot();
 
         // Free Line part
         wxOverlay m_overlay;
         bool isDragging = false;          // Track if the user is dragging the mouse
-        mpFXYVector* CurrentPolyline = NULL;
+        mpFXYVector* CurrentPolyline = nullptr;
         void OnUserMouseAction(void *Sender, wxMouseEvent &event, bool &cancel);
 
         DECLARE_EVENT_TABLE()
