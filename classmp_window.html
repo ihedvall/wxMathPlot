@@ -475,6 +475,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMagnetize</b> (boo
 <tr class="memitem:a14df5b370eed897f8f0bf0b5514ac3d1" id="r_a14df5b370eed897f8f0bf0b5514ac3d1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classmp_info_layer.html">mpInfoLayer</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_window.html#a14df5b370eed897f8f0bf0b5514ac3d1">GetMovingInfoLayer</a> () const</td></tr>
 <tr class="memdesc:a14df5b370eed897f8f0bf0b5514ac3d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns moving info layer.  <br /></td></tr>
 <tr class="separator:a14df5b370eed897f8f0bf0b5514ac3d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae674520f213ad8c9d0a3f869bde5992e" id="r_ae674520f213ad8c9d0a3f869bde5992e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_window.html#ae674520f213ad8c9d0a3f869bde5992e">RefreshConfigWindow</a> (<a class="el" href="mathplot_8h.html#a2964014c6091c7ec3294b305f2242cb4">mpLayerType</a> layerType, int param=0, bool show=false)</td></tr>
+<tr class="memdesc:ae674520f213ad8c9d0a3f869bde5992e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refresh the config window if present.  <br /></td></tr>
+<tr class="separator:ae674520f213ad8c9d0a3f869bde5992e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b489c49b39599b3d7f7aa77cec4792a" id="r_a3b489c49b39599b3d7f7aa77cec4792a"><td class="memItemLeft" align="right" valign="top"><a id="a3b489c49b39599b3d7f7aa77cec4792a" name="a3b489c49b39599b3d7f7aa77cec4792a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>OpenConfigWindow</b> ()</td></tr>
 <tr class="memdesc:a3b489c49b39599b3d7f7aa77cec4792a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Opens configuration window. <br /></td></tr>
@@ -499,9 +502,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a9917bfe394e08ed494ff539190f15c36" id="r_a9917bfe394e08ed494ff539190f15c36"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_window.html#a9917bfe394e08ed494ff539190f15c36">SetDefaultLegendIsAlwaysVisible</a> (bool visible)</td></tr>
 <tr class="memdesc:a9917bfe394e08ed494ff539190f15c36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set if legend is always visible even if series is not plotted.  <br /></td></tr>
 <tr class="separator:a9917bfe394e08ed494ff539190f15c36"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9fe2fb4f4795d0dd129d8164d0f89904" id="r_a9fe2fb4f4795d0dd129d8164d0f89904"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_window.html#a9fe2fb4f4795d0dd129d8164d0f89904">RefreshConfigWindow</a> (<a class="el" href="mathplot_8h.html#a2964014c6091c7ec3294b305f2242cb4">mpLayerType</a> layerType, int param=0, bool show=false)</td></tr>
-<tr class="memdesc:a9fe2fb4f4795d0dd129d8164d0f89904"><td class="mdescLeft">&#160;</td><td class="mdescRight">Refresh the config window if present.  <br /></td></tr>
-<tr class="separator:a9fe2fb4f4795d0dd129d8164d0f89904"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-attribs" name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -3351,17 +3351,14 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_infoLegendSelectedSe
 
 </div>
 </div>
-<a id="a9fe2fb4f4795d0dd129d8164d0f89904" name="a9fe2fb4f4795d0dd129d8164d0f89904"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fe2fb4f4795d0dd129d8164d0f89904">&#9670;&#160;</a></span>RefreshConfigWindow()</h2>
+<a id="ae674520f213ad8c9d0a3f869bde5992e" name="ae674520f213ad8c9d0a3f869bde5992e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae674520f213ad8c9d0a3f869bde5992e">&#9670;&#160;</a></span>RefreshConfigWindow()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">static void mpWindow::RefreshConfigWindow </td>
+          <td class="memname">void mpWindow::RefreshConfigWindow </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="mathplot_8h.html#a2964014c6091c7ec3294b305f2242cb4">mpLayerType</a>&#160;</td>
           <td class="paramname"><em>layerType</em>, </td>
@@ -3384,11 +3381,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_infoLegendSelectedSe
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
 <p>Refresh the config window if present. </p>

@@ -83,11 +83,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a64f7580347d61b59b84bf72220073c12" id="r_a64f7580347d61b59b84bf72220073c12"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_info_coords.html#a64f7580347d61b59b84bf72220073c12">UpdateInfo</a> (<a class="el" href="classmp_window.html">mpWindow</a> &amp;w, wxEvent &amp;event) override</td></tr>
 <tr class="memdesc:a64f7580347d61b59b84bf72220073c12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update the content of the info box.  <br /></td></tr>
 <tr class="separator:a64f7580347d61b59b84bf72220073c12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adfd84f83ecb4a936e210aeeff3c92a48" id="r_adfd84f83ecb4a936e210aeeff3c92a48"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_info_coords.html#adfd84f83ecb4a936e210aeeff3c92a48">ErasePlot</a> (wxDC &amp;, <a class="el" href="classmp_window.html">mpWindow</a> &amp;) override</td></tr>
-<tr class="memdesc:adfd84f83ecb4a936e210aeeff3c92a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Just delete the bitmap of the info.  <br /></td></tr>
-<tr class="separator:adfd84f83ecb4a936e210aeeff3c92a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a54e302b4134365dbc81b36ee0876a742" id="r_a54e302b4134365dbc81b36ee0876a742"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_info_coords.html#a54e302b4134365dbc81b36ee0876a742">Show</a> (bool show)</td></tr>
-<tr class="memdesc:a54e302b4134365dbc81b36ee0876a742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set if info coords shall be shown or hidden.  <br /></td></tr>
+<tr class="memdesc:a54e302b4134365dbc81b36ee0876a742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Just delete the bitmap of the info.  <br /></td></tr>
 <tr class="separator:a54e302b4134365dbc81b36ee0876a742"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2c9c04596832c158cf91ac65d7091599" id="r_a2c9c04596832c158cf91ac65d7091599"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_info_coords.html#a2c9c04596832c158cf91ac65d7091599">IsShown</a> () const</td></tr>
 <tr class="memdesc:a2c9c04596832c158cf91ac65d7091599"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get shown status.  <br /></td></tr>
@@ -133,6 +130,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetPenSeries</b> (con
 <tr class="memitem:a8c6c9b29117380a3095a8e86be6b7fb5 inherit pub_methods_classmp_info_layer" id="r_a8c6c9b29117380a3095a8e86be6b7fb5"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_info_layer.html#a8c6c9b29117380a3095a8e86be6b7fb5">HasBBox</a> () override</td></tr>
 <tr class="memdesc:a8c6c9b29117380a3095a8e86be6b7fb5 inherit pub_methods_classmp_info_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classmp_info_layer.html" title="Base class to create small rectangular info boxes mpInfoLayer is the base class to create a small rec...">mpInfoLayer</a> has not bounding box.  <br /></td></tr>
 <tr class="separator:a8c6c9b29117380a3095a8e86be6b7fb5 inherit pub_methods_classmp_info_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a297ecbc1fc56d6e6a1833f23fa538186 inherit pub_methods_classmp_info_layer" id="r_a297ecbc1fc56d6e6a1833f23fa538186"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_info_layer.html#a297ecbc1fc56d6e6a1833f23fa538186">ErasePlot</a> (wxDC &amp;, <a class="el" href="classmp_window.html">mpWindow</a> &amp;)</td></tr>
+<tr class="memdesc:a297ecbc1fc56d6e6a1833f23fa538186 inherit pub_methods_classmp_info_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Just delete the bitmap of the info.  <br /></td></tr>
+<tr class="separator:a297ecbc1fc56d6e6a1833f23fa538186 inherit pub_methods_classmp_info_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa248f40bfd2d98a0029879ba192402b0 inherit pub_methods_classmp_info_layer" id="r_aa248f40bfd2d98a0029879ba192402b0"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_info_layer.html#aa248f40bfd2d98a0029879ba192402b0">Inside</a> (const wxPoint &amp;point)</td></tr>
 <tr class="memdesc:aa248f40bfd2d98a0029879ba192402b0 inherit pub_methods_classmp_info_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is given point inside the info box rectangle?  <br /></td></tr>
 <tr class="separator:aa248f40bfd2d98a0029879ba192402b0 inherit pub_methods_classmp_info_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -550,47 +550,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_CanDelete</b> = fal
 
 </div>
 </div>
-<a id="adfd84f83ecb4a936e210aeeff3c92a48" name="adfd84f83ecb4a936e210aeeff3c92a48"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adfd84f83ecb4a936e210aeeff3c92a48">&#9670;&#160;</a></span>ErasePlot()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void mpInfoCoords::ErasePlot </td>
-          <td>(</td>
-          <td class="paramtype">wxDC &amp;&#160;</td>
-          <td class="paramname">, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="classmp_window.html">mpWindow</a> &amp;&#160;</td>
-          <td class="paramname">&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Just delete the bitmap of the info. </p>
-<p>Not used since background bitmap is no longer needed Just keep to not break compatability with overridden functions </p>
-
-<p>Reimplemented from <a class="el" href="classmp_info_layer.html#a297ecbc1fc56d6e6a1833f23fa538186">mpInfoLayer</a>.</p>
-
-</div>
-</div>
 <a id="abd8f679d16981e901d3d273cb823fb01" name="abd8f679d16981e901d3d273cb823fb01"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abd8f679d16981e901d3d273cb823fb01">&#9670;&#160;</a></span>GetInfoCoordsText()</h2>
 
@@ -814,8 +773,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_CanDelete</b> = fal
 </table>
 </div><div class="memdoc">
 
-<p>Set if info coords shall be shown or hidden. </p>
-<dl class="params"><dt>Parameters</dt><dd>
+<p>Just delete the bitmap of the info. </p>
+<p>Not used since background bitmap is no longer needed Just keep to not break compatability with overridden functions Set if info coords shall be shown or hidden </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">show</td><td>Set if shall be shown </td></tr>
   </table>
