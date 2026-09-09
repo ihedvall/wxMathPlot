@@ -1358,8 +1358,8 @@ class WXDLLIMPEXP_MATHPLOT mpInfoCoords: public mpInfoLayer
 
     /** Just delete the bitmap of the info. Not used since background bitmap is no longer needed
      * Just keep to not break compatability with overridden functions*/
-    [[deprecated("Use Show() instead")]]
-    void ErasePlot(wxDC&, mpWindow&) override;
+    //[[deprecated("Use Show() instead")]]
+    //void ErasePlot(wxDC&, mpWindow&) override;
 
 
     /** Set if info coords shall be shown or hidden
@@ -4519,7 +4519,7 @@ class WXDLLIMPEXP_MATHPLOT mpWindow: public wxWindow
      * @param param specific parameter for the page
      * @param show if true, the window is shown in any cases
      */
-    static void RefreshConfigWindow(mpLayerType layerType, int param = 0, bool show = false);
+    void RefreshConfigWindow(mpLayerType layerType, int param = 0, bool show = false);
 
     /**
      * Opens configuration window

@@ -452,10 +452,11 @@ void mpInfoLayer::SetInfoRectangle(const mpWindow &w, int width, int height)
         m_dim.y = screenHeight - (w.GetMarginBottom(true) + m_dim.height) / 2;
         break;
       }
+
       case mpCursor:
       case mpMarginUser:
       default:
-        ;
+        break;
     }
     if (m_dim.y < MARGIN_TOP_OFFSET)
       m_dim.y = MARGIN_TOP_OFFSET;
@@ -563,7 +564,7 @@ void mpInfoCoords::UpdateInfo(mpWindow &w, wxEvent &event)
   }
 }
 
-void mpInfoCoords::ErasePlot(wxDC &, mpWindow &) {}
+// void mpInfoCoords::ErasePlot(wxDC &, mpWindow &) {}
 
 wxString mpInfoCoords::GetInfoCoordsText(mpWindow &w, double xVal, std::unordered_map<int, double> yValList)
 {
