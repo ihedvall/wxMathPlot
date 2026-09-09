@@ -654,14 +654,24 @@ void MathPlotDemoFrame::OnbMultiYAxisClick(wxCommandEvent &WXUNUSED(event))
   // Fit all and refresh display
   mPlot->Fit();
 
+#if wxCHECK_VERSION(3, 3, 0)
+  wxTipWindow::New(this,
+                    "Interact with individual axis by keeping mouse inside a specific axis and:\n"
+                    " - Pan by holding right mouse button and moving up/down\n"
+                    " - Zoom by holding left mouse button and moving up/down\n"
+                    " - Zoom by scrolling mouse wheel\n"
+                    "If keeping mouse inside plot area, same action applies but affect all axes",
+                    400);
+#else
+  new wxTipWindow(this,
+                    "Interact with individual axis by keeping mouse inside a specific axis and:\n"
+                    " - Pan by holding right mouse button and moving up/down\n"
+                    " - Zoom by holding left mouse button and moving up/down\n"
+                    " - Zoom by scrolling mouse wheel\n"
+                    "If keeping mouse inside plot area, same action applies but affect all axes",
+                    400);
+#endif
 
-  auto tip = wxTipWindow::New(this,
-                  "Interact with individual axis by keeping mouse inside a specific axis and:\n"
-                  " - Pan by holding right mouse button and moving up/down\n"
-                  " - Zoom by holding left mouse button and moving up/down\n"
-                  " - Zoom by scrolling mouse wheel\n"
-                  "If keeping mouse inside plot area, same action applies but affect all axes",
-                  400);
 }
 
 void MathPlotDemoFrame::OnbMovingObjectClick(wxCommandEvent &WXUNUSED(event))
@@ -680,7 +690,11 @@ void MathPlotDemoFrame::OnbMovingObjectClick(wxCommandEvent &WXUNUSED(event))
     bmpLayer->SetBitmap(bmp, -40, -40, 120, 120);
   }
   else {
+#if wxCHECK_VERSION(3,3,0)
     wxTipWindow::New(this, "Please copy the image 'gridmap.png' to the executable's directory.", 500);
+#else
+    new wxTipWindow(this, "Please copy the image 'gridmap.png' to the executable's directory.", 500);
+#endif
   }
 
   mPlot->AddLayer(new mpCovarianceEllipse(0.4, 0.4, 0.2, 2, 32, wxT("Cov1")), false);

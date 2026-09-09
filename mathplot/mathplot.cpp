@@ -315,7 +315,7 @@ mpInfoLayer::mpInfoLayer() :
   m_ZIndex = mpZIndex_INFO;
 }
 
-mpInfoLayer::mpInfoLayer(const wxPoint pos, const wxBrush &brush, mpLocation location) :
+mpInfoLayer::mpInfoLayer(const wxPoint& pos, const wxBrush &brush, mpLocation location) :
     mpInfoLayer()
 {
   m_brush = brush;

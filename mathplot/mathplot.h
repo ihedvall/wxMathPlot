@@ -1222,7 +1222,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLayer: public mpLayer
      @param pos Sets the initial position in percent of the rectangle of the layer.
      @param brush pointer to a fill brush. Default is transparent
      @param location to place in the margin or free */
-    mpInfoLayer(wxPoint pos, const wxBrush &brush = *wxTRANSPARENT_BRUSH, mpLocation location = mpMarginUser);
+    mpInfoLayer(const wxPoint& pos, const wxBrush &brush = *wxTRANSPARENT_BRUSH, mpLocation location = mpMarginUser);
 
     /** Destructor */
     ~mpInfoLayer() override;
@@ -1305,12 +1305,12 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLayer: public mpLayer
     }
 
   protected:
-    wxRect m_dim;           //!< The bounding rectangle of the mpInfoLayer box (may be resized dynamically by the Plot method).
-    wxBitmap* m_info_bmp;   //!< The bitmap that contain the info
+    wxRect m_dim = {};           //!< The bounding rectangle of the mpInfoLayer box (may be resized dynamically by the Plot method).
+    wxBitmap* m_info_bmp = nullptr;   //!< The bitmap that contain the info
     wxPoint m_reference;    //!< Holds the reference point for movements
-    double m_relX;          //!< Box X position relative window, used to rescale the info box position when the window is resized.
-    double m_relY;          //!< Box Y position relative window, used to rescale the info box position when the window is resized.
-    mpLocation m_location;  //!< Location of the box in the margin. Default mpMarginNone = use coordinates
+    double m_relX = 0.0;          //!< Box X position relative window, used to rescale the info box position when the window is resized.
+    double m_relY = 0.0;          //!< Box Y position relative window, used to rescale the info box position when the window is resized.
+    mpLocation m_location = mpCursor;  //!< Location of the box in the margin. Default mpMarginNone = use coordinates
 
     /** Plot method. Can be overridden by derived classes.
      @param dc the device content where to plot
