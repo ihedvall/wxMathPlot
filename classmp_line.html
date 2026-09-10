@@ -64,9 +64,9 @@ Collaboration diagram for mpLine:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a99966ffdb5d3c476663ab8b401878fbf" id="r_a99966ffdb5d3c476663ab8b401878fbf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_line.html#a99966ffdb5d3c476663ab8b401878fbf">mpLine</a> (double value, const wxPen &amp;pen= *wxGREEN_PEN)</td></tr>
-<tr class="memdesc:a99966ffdb5d3c476663ab8b401878fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implement a line.  <br /></td></tr>
-<tr class="separator:a99966ffdb5d3c476663ab8b401878fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bd3c186f2b8bf1759799ebc74708b71" id="r_a7bd3c186f2b8bf1759799ebc74708b71"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_line.html#a7bd3c186f2b8bf1759799ebc74708b71">mpLine</a> (double value, const wxPen &amp;pen=mpColourScheme::Instance().GetLinePen(0))</td></tr>
+<tr class="memdesc:a7bd3c186f2b8bf1759799ebc74708b71"><td class="mdescLeft">&#160;</td><td class="mdescRight">Implement a line.  <br /></td></tr>
+<tr class="separator:a7bd3c186f2b8bf1759799ebc74708b71"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92079eaec9f99f74a243e65093c7639d" id="r_a92079eaec9f99f74a243e65093c7639d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classmp_line.html#a92079eaec9f99f74a243e65093c7639d">HasBBox</a> () override</td></tr>
 <tr class="memdesc:a92079eaec9f99f74a243e65093c7639d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check whether this layer has a bounding box.  <br /></td></tr>
 <tr class="separator:a92079eaec9f99f74a243e65093c7639d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -249,11 +249,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetWindow</b> (<a cla
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
 <tr class="memitem:aeb47b31da47a4539ed1961a3e6d77c3c" id="r_aeb47b31da47a4539ed1961a3e6d77c3c"><td class="memItemLeft" align="right" valign="top"><a id="aeb47b31da47a4539ed1961a3e6d77c3c" name="aeb47b31da47a4539ed1961a3e6d77c3c"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>m_value</b></td></tr>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>m_value</b> = 0.0</td></tr>
 <tr class="memdesc:aeb47b31da47a4539ed1961a3e6d77c3c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The x or y coordinates of the line. <br /></td></tr>
 <tr class="separator:aeb47b31da47a4539ed1961a3e6d77c3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76f37bac6b2402498f7ffda6fe6a535a" id="r_a76f37bac6b2402498f7ffda6fe6a535a"><td class="memItemLeft" align="right" valign="top"><a id="a76f37bac6b2402498f7ffda6fe6a535a" name="a76f37bac6b2402498f7ffda6fe6a535a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_IsHorizontal</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_IsHorizontal</b> = false</td></tr>
 <tr class="memdesc:a76f37bac6b2402498f7ffda6fe6a535a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the line horizontal? Default false. <br /></td></tr>
 <tr class="separator:a76f37bac6b2402498f7ffda6fe6a535a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classmp_function"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classmp_function')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classmp_function.html">mpFunction</a></td></tr>
@@ -266,7 +266,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_continuous</b> = fa
 <tr class="memdesc:a15787f8ee36b25a70e51b48d7c831abb inherit pro_attribs_classmp_function"><td class="mdescLeft">&#160;</td><td class="mdescRight">A symbol for the plot in place of point. Default mpNone. <br /></td></tr>
 <tr class="separator:a15787f8ee36b25a70e51b48d7c831abb inherit pro_attribs_classmp_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae406bea9abb5fa2c595cd0ba68525f3e inherit pro_attribs_classmp_function" id="r_ae406bea9abb5fa2c595cd0ba68525f3e"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>m_symbolSize</b> = 0</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_symbolSize</b> = 6</td></tr>
 <tr class="memdesc:ae406bea9abb5fa2c595cd0ba68525f3e inherit pro_attribs_classmp_function"><td class="mdescLeft">&#160;</td><td class="mdescRight">Size of the symbol. Default 6. <br /></td></tr>
 <tr class="separator:ae406bea9abb5fa2c595cd0ba68525f3e inherit pro_attribs_classmp_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0e4fb3f75f05294a63197c0ac68bcac inherit pro_attribs_classmp_function" id="r_af0e4fb3f75f05294a63197c0ac68bcac"><td class="memItemLeft" align="right" valign="top">
@@ -278,7 +278,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_yAxisID</b> = 0</td>
 <tr class="memdesc:aa5e2e59113659bf57b580675192e44d2 inherit pro_attribs_classmp_function"><td class="mdescLeft">&#160;</td><td class="mdescRight">The ID of the Y axis used by the function. Equal 0 if no axis. <br /></td></tr>
 <tr class="separator:aa5e2e59113659bf57b580675192e44d2 inherit pro_attribs_classmp_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab941e952806a5f78b5b95e6e6c237b69 inherit pro_attribs_classmp_function" id="r_ab941e952806a5f78b5b95e6e6c237b69"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_LegendIsAlwaysVisible</b> = false</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_LegendIsAlwaysVisible</b> = true</td></tr>
 <tr class="memdesc:ab941e952806a5f78b5b95e6e6c237b69 inherit pro_attribs_classmp_function"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the name is visible in the legend despite the visibility of the function. Default false. <br /></td></tr>
 <tr class="separator:ab941e952806a5f78b5b95e6e6c237b69 inherit pro_attribs_classmp_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e66f452b03865021a23390270fd56ea inherit pro_attribs_classmp_function" id="r_a3e66f452b03865021a23390270fd56ea"><td class="memItemLeft" align="right" valign="top">
@@ -286,7 +286,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_autoStep</b> = fals
 <tr class="memdesc:a3e66f452b03865021a23390270fd56ea inherit pro_attribs_classmp_function"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates m_step automatically based on how many points you want to draw. <br /></td></tr>
 <tr class="separator:a3e66f452b03865021a23390270fd56ea inherit pro_attribs_classmp_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a7dfbb839254c48a6338b1627ee665e inherit pro_attribs_classmp_function" id="r_a5a7dfbb839254c48a6338b1627ee665e"><td class="memItemLeft" align="right" valign="top">
-size_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_maxNOfPoints</b> = 0</td></tr>
+size_t&#160;</td><td class="memItemRight" valign="bottom"><b>m_maxNOfPoints</b> = 3000</td></tr>
 <tr class="memdesc:a5a7dfbb839254c48a6338b1627ee665e inherit pro_attribs_classmp_function"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of points to draw to screen. <br /></td></tr>
 <tr class="separator:a5a7dfbb839254c48a6338b1627ee665e inherit pro_attribs_classmp_function"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classmp_layer"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classmp_layer')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classmp_layer.html">mpLayer</a></td></tr>
@@ -307,15 +307,15 @@ wxFont&#160;</td><td class="memItemRight" valign="bottom"><b>m_font</b></td></tr
 <tr class="memdesc:a1b6acab5d04921f905df4bcdbfd334e1 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer's font. <br /></td></tr>
 <tr class="separator:a1b6acab5d04921f905df4bcdbfd334e1 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a523515b6b9cecab18edc5e62641b33d1 inherit pro_attribs_classmp_layer" id="r_a523515b6b9cecab18edc5e62641b33d1"><td class="memItemLeft" align="right" valign="top">
-wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>m_fontcolour</b></td></tr>
+wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>m_fontcolour</b> = mpColourScheme::Instance().GetDefaultFgColour()</td></tr>
 <tr class="memdesc:a523515b6b9cecab18edc5e62641b33d1 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer's font foreground colour. <br /></td></tr>
 <tr class="separator:a523515b6b9cecab18edc5e62641b33d1 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad24283efc41df6b8f0d80030f0e6a56d inherit pro_attribs_classmp_layer" id="r_ad24283efc41df6b8f0d80030f0e6a56d"><td class="memItemLeft" align="right" valign="top">
-wxPen&#160;</td><td class="memItemRight" valign="bottom"><b>m_pen</b></td></tr>
+wxPen&#160;</td><td class="memItemRight" valign="bottom"><b>m_pen</b> = {mpColourScheme::Instance().GetDefaultFgColour(), 1, wxPENSTYLE_SOLID}</td></tr>
 <tr class="memdesc:ad24283efc41df6b8f0d80030f0e6a56d inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer's pen. Default Colour = Black, width = 1, style = wxPENSTYLE_SOLID. <br /></td></tr>
 <tr class="separator:ad24283efc41df6b8f0d80030f0e6a56d inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3d0ae222700628378471709bc62f76c inherit pro_attribs_classmp_layer" id="r_ac3d0ae222700628378471709bc62f76c"><td class="memItemLeft" align="right" valign="top">
-wxBrush&#160;</td><td class="memItemRight" valign="bottom"><b>m_brush</b></td></tr>
+wxBrush&#160;</td><td class="memItemRight" valign="bottom"><b>m_brush</b> = {mpColourScheme::Instance().GetDefaultBgColour(), wxBRUSHSTYLE_TRANSPARENT}</td></tr>
 <tr class="memdesc:ac3d0ae222700628378471709bc62f76c inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer's brush. Default wxTRANSPARENT_BRUSH. <br /></td></tr>
 <tr class="separator:ac3d0ae222700628378471709bc62f76c inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0894b3ff9ce5a82524256497599636c inherit pro_attribs_classmp_layer" id="r_ac0894b3ff9ce5a82524256497599636c"><td class="memItemLeft" align="right" valign="top">
@@ -331,7 +331,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_drawOutsideMargins<
 <tr class="memdesc:a2254c13cc469d401eaa0833a3d4a4034 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select if the layer should draw only inside margins or over all DC. Default : false. <br /></td></tr>
 <tr class="separator:a2254c13cc469d401eaa0833a3d4a4034 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6388b1d9d1480546c27d00eb989fe818 inherit pro_attribs_classmp_layer" id="r_a6388b1d9d1480546c27d00eb989fe818"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_visible</b> = false</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_visible</b> = true</td></tr>
 <tr class="memdesc:a6388b1d9d1480546c27d00eb989fe818 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggles layer visibility. Default : true. <br /></td></tr>
 <tr class="separator:a6388b1d9d1480546c27d00eb989fe818 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3ea60fa1be7315614cea3124e5d69c2 inherit pro_attribs_classmp_layer" id="r_aa3ea60fa1be7315614cea3124e5d69c2"><td class="memItemLeft" align="right" valign="top">
@@ -339,7 +339,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_tractable</b> = fal
 <tr class="memdesc:aa3ea60fa1be7315614cea3124e5d69c2 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the layer tractable. <br /></td></tr>
 <tr class="separator:aa3ea60fa1be7315614cea3124e5d69c2 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab36829f686179b68375f181400329383 inherit pro_attribs_classmp_layer" id="r_ab36829f686179b68375f181400329383"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>m_flags</b> = 0</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_flags</b> = <a class="el" href="mathplot_8h.html#aa628da57cd09f8c7357e5caf388b5538a745266ad1df6226b86f27e9d3f46ee9b">mpALIGN_SE</a></td></tr>
 <tr class="memdesc:ab36829f686179b68375f181400329383 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds label alignment. Default : mpALIGN_SW for series and mpALIGN_CENTER for scale. <br /></td></tr>
 <tr class="separator:ab36829f686179b68375f181400329383 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64a14a22b372feff804190f4da408eba inherit pro_attribs_classmp_layer" id="r_a64a14a22b372feff804190f4da408eba"><td class="memItemLeft" align="right" valign="top">
@@ -347,7 +347,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_flags</b> = 0</td></
 <tr class="memdesc:a64a14a22b372feff804190f4da408eba inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">The boundaries for plotting curve calculated by <a class="el" href="classmp_window.html" title="Canvas for plotting mpLayer implementations.">mpWindow</a>. <br /></td></tr>
 <tr class="separator:a64a14a22b372feff804190f4da408eba inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62dea60b6a809330729ec11d41240481 inherit pro_attribs_classmp_layer" id="r_a62dea60b6a809330729ec11d41240481"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_CanDelete</b> = false</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_CanDelete</b> = true</td></tr>
 <tr class="memdesc:a62dea60b6a809330729ec11d41240481 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the layer can be deleted. <br /></td></tr>
 <tr class="separator:a62dea60b6a809330729ec11d41240481 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a166c7f930aa85c4e2de529c682a3fdd7 inherit pro_attribs_classmp_layer" id="r_a166c7f930aa85c4e2de529c682a3fdd7"><td class="memItemLeft" align="right" valign="top">
@@ -375,8 +375,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateContext</b> (wx
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract class providing a line. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a99966ffdb5d3c476663ab8b401878fbf" name="a99966ffdb5d3c476663ab8b401878fbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a99966ffdb5d3c476663ab8b401878fbf">&#9670;&#160;</a></span>mpLine()</h2>
+<a id="a7bd3c186f2b8bf1759799ebc74708b71" name="a7bd3c186f2b8bf1759799ebc74708b71"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bd3c186f2b8bf1759799ebc74708b71">&#9670;&#160;</a></span>mpLine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -391,7 +391,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateContext</b> (wx
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const wxPen &amp;&#160;</td>
-          <td class="paramname"><em>pen</em> = <code>*wxGREEN_PEN</code>&#160;</td>
+          <td class="paramname"><em>pen</em> = <code>mpColourScheme::Instance().GetLinePen(0)</code>&#160;</td>
         </tr>
         <tr>
           <td></td>

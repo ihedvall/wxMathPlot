@@ -330,23 +330,23 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_xPos</b> = 0</td></t
 <tr class="separator:a796929f66de82d9375c19e130b54ff75"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classmp_scale"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classmp_scale')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classmp_scale.html">mpScale</a></td></tr>
 <tr class="memitem:a72e7c6a46eda7ccca8358f00b194cdc5 inherit pro_attribs_classmp_scale" id="r_a72e7c6a46eda7ccca8358f00b194cdc5"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>m_axisID</b></td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_axisID</b> = -1</td></tr>
 <tr class="memdesc:a72e7c6a46eda7ccca8358f00b194cdc5 inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unique ID that identify this axis. Default -1 mean that axis is not used. <br /></td></tr>
 <tr class="separator:a72e7c6a46eda7ccca8358f00b194cdc5 inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad822ac820a3cec1ce64eaf2e20ae5860 inherit pro_attribs_classmp_scale" id="r_ad822ac820a3cec1ce64eaf2e20ae5860"><td class="memItemLeft" align="right" valign="top">
-wxPen&#160;</td><td class="memItemRight" valign="bottom"><b>m_gridpen</b></td></tr>
+wxPen&#160;</td><td class="memItemRight" valign="bottom"><b>m_gridpen</b> = mpColourScheme::Instance().GetAxisColour()</td></tr>
 <tr class="memdesc:ad822ac820a3cec1ce64eaf2e20ae5860 inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">Grid's pen. Default Colour = LIGHT_GREY, width = 1, style = wxPENSTYLE_DOT. <br /></td></tr>
 <tr class="separator:ad822ac820a3cec1ce64eaf2e20ae5860 inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90fd12bbbf5f7f3340bef64f7683e904 inherit pro_attribs_classmp_scale" id="r_a90fd12bbbf5f7f3340bef64f7683e904"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_ticks</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_ticks</b> = true</td></tr>
 <tr class="memdesc:a90fd12bbbf5f7f3340bef64f7683e904 inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to show ticks. Default true. <br /></td></tr>
 <tr class="separator:a90fd12bbbf5f7f3340bef64f7683e904 inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a284098a2c1e324c4336f80e79044766a inherit pro_attribs_classmp_scale" id="r_a284098a2c1e324c4336f80e79044766a"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_grids</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_grids</b> = false</td></tr>
 <tr class="memdesc:a284098a2c1e324c4336f80e79044766a inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to show grids. Default false. <br /></td></tr>
 <tr class="separator:a284098a2c1e324c4336f80e79044766a inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac89c85fba7f5f46e0b119f41d111b7d5 inherit pro_attribs_classmp_scale" id="r_ac89c85fba7f5f46e0b119f41d111b7d5"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_auto</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_auto</b> = true</td></tr>
 <tr class="memdesc:ac89c85fba7f5f46e0b119f41d111b7d5 inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag to autosize grids. Default true. <br /></td></tr>
 <tr class="separator:ac89c85fba7f5f46e0b119f41d111b7d5 inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa1e0aa754312cc6277e922b981a9e2d7 inherit pro_attribs_classmp_scale" id="r_aa1e0aa754312cc6277e922b981a9e2d7"><td class="memItemLeft" align="right" valign="top">
@@ -354,11 +354,11 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_auto</b></td></tr>
 <tr class="memdesc:aa1e0aa754312cc6277e922b981a9e2d7 inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">Range axis values when autosize is false. <br /></td></tr>
 <tr class="separator:aa1e0aa754312cc6277e922b981a9e2d7 inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e7045bf70e57f160902ac4be2c05897 inherit pro_attribs_classmp_scale" id="r_a0e7045bf70e57f160902ac4be2c05897"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="mathplot_8h.html#ab285929a0e74f3648f421ec238859a6c">mpLabelType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_labelType</b></td></tr>
+<a class="el" href="mathplot_8h.html#ab285929a0e74f3648f421ec238859a6c">mpLabelType</a>&#160;</td><td class="memItemRight" valign="bottom"><b>m_labelType</b> = <a class="el" href="mathplot_8h.html#ab285929a0e74f3648f421ec238859a6cad1d44d02e0471c296a560afeb6609114">mpLabel_TIME</a></td></tr>
 <tr class="memdesc:a0e7045bf70e57f160902ac4be2c05897 inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select labels mode: mpLabel_AUTO for normal labels, mpLabel_TIME for time axis in hours, minutes, seconds. <br /></td></tr>
 <tr class="separator:a0e7045bf70e57f160902ac4be2c05897 inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a55956bb7898af69512dd9ce1967cc7 inherit pro_attribs_classmp_scale" id="r_a9a55956bb7898af69512dd9ce1967cc7"><td class="memItemLeft" align="right" valign="top">
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>m_timeConv</b></td></tr>
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>m_timeConv</b> = 0x20</td></tr>
 <tr class="memdesc:a9a55956bb7898af69512dd9ce1967cc7 inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">Selects if time has to be converted to local time or not. <br /></td></tr>
 <tr class="separator:a9a55956bb7898af69512dd9ce1967cc7 inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab534cafae6431c6654c8ab4f1a0ee28 inherit pro_attribs_classmp_scale" id="r_aab534cafae6431c6654c8ab4f1a0ee28"><td class="memItemLeft" align="right" valign="top">
@@ -366,7 +366,7 @@ wxString&#160;</td><td class="memItemRight" valign="bottom"><b>m_labelFormat</b>
 <tr class="memdesc:aab534cafae6431c6654c8ab4f1a0ee28 inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">Format string used to print labels. <br /></td></tr>
 <tr class="separator:aab534cafae6431c6654c8ab4f1a0ee28 inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a8541c9d19b6b893d0874301a3e0918 inherit pro_attribs_classmp_scale" id="r_a1a8541c9d19b6b893d0874301a3e0918"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isLog</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_isLog</b> = false</td></tr>
 <tr class="memdesc:a1a8541c9d19b6b893d0874301a3e0918 inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the axis a log axis ? <br /></td></tr>
 <tr class="separator:a1a8541c9d19b6b893d0874301a3e0918 inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e346c0e879aadda7012c39c374db441 inherit pro_attribs_classmp_scale" id="r_a0e346c0e879aadda7012c39c374db441"><td class="memItemLeft" align="right" valign="top">
@@ -374,7 +374,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_hover</b> = false</
 <tr class="memdesc:a0e346c0e879aadda7012c39c374db441 inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicate if axis is hovered by mouse while dragging a series onto it. <br /></td></tr>
 <tr class="separator:a0e346c0e879aadda7012c39c374db441 inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76a0fb8e0542c33d362236c96b945dd8 inherit pro_attribs_classmp_scale" id="r_a76a0fb8e0542c33d362236c96b945dd8"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_CoordIsAlwaysVisible</b></td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_CoordIsAlwaysVisible</b> = true</td></tr>
 <tr class="memdesc:a76a0fb8e0542c33d362236c96b945dd8 inherit pro_attribs_classmp_scale"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, the mouse coordinates is visible in the info coordinates despite the visibility of the axis. Default true. <br /></td></tr>
 <tr class="separator:a76a0fb8e0542c33d362236c96b945dd8 inherit pro_attribs_classmp_scale"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5c597121c5b7be88d322d0d7715aa22d inherit pro_attribs_classmp_scale" id="r_a5c597121c5b7be88d322d0d7715aa22d"><td class="memItemLeft" >
@@ -419,15 +419,15 @@ wxFont&#160;</td><td class="memItemRight" valign="bottom"><b>m_font</b></td></tr
 <tr class="memdesc:a1b6acab5d04921f905df4bcdbfd334e1 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer's font. <br /></td></tr>
 <tr class="separator:a1b6acab5d04921f905df4bcdbfd334e1 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a523515b6b9cecab18edc5e62641b33d1 inherit pro_attribs_classmp_layer" id="r_a523515b6b9cecab18edc5e62641b33d1"><td class="memItemLeft" align="right" valign="top">
-wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>m_fontcolour</b></td></tr>
+wxColour&#160;</td><td class="memItemRight" valign="bottom"><b>m_fontcolour</b> = mpColourScheme::Instance().GetDefaultFgColour()</td></tr>
 <tr class="memdesc:a523515b6b9cecab18edc5e62641b33d1 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer's font foreground colour. <br /></td></tr>
 <tr class="separator:a523515b6b9cecab18edc5e62641b33d1 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad24283efc41df6b8f0d80030f0e6a56d inherit pro_attribs_classmp_layer" id="r_ad24283efc41df6b8f0d80030f0e6a56d"><td class="memItemLeft" align="right" valign="top">
-wxPen&#160;</td><td class="memItemRight" valign="bottom"><b>m_pen</b></td></tr>
+wxPen&#160;</td><td class="memItemRight" valign="bottom"><b>m_pen</b> = {mpColourScheme::Instance().GetDefaultFgColour(), 1, wxPENSTYLE_SOLID}</td></tr>
 <tr class="memdesc:ad24283efc41df6b8f0d80030f0e6a56d inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer's pen. Default Colour = Black, width = 1, style = wxPENSTYLE_SOLID. <br /></td></tr>
 <tr class="separator:ad24283efc41df6b8f0d80030f0e6a56d inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac3d0ae222700628378471709bc62f76c inherit pro_attribs_classmp_layer" id="r_ac3d0ae222700628378471709bc62f76c"><td class="memItemLeft" align="right" valign="top">
-wxBrush&#160;</td><td class="memItemRight" valign="bottom"><b>m_brush</b></td></tr>
+wxBrush&#160;</td><td class="memItemRight" valign="bottom"><b>m_brush</b> = {mpColourScheme::Instance().GetDefaultBgColour(), wxBRUSHSTYLE_TRANSPARENT}</td></tr>
 <tr class="memdesc:ac3d0ae222700628378471709bc62f76c inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Layer's brush. Default wxTRANSPARENT_BRUSH. <br /></td></tr>
 <tr class="separator:ac3d0ae222700628378471709bc62f76c inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0894b3ff9ce5a82524256497599636c inherit pro_attribs_classmp_layer" id="r_ac0894b3ff9ce5a82524256497599636c"><td class="memItemLeft" align="right" valign="top">
@@ -443,7 +443,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_drawOutsideMargins<
 <tr class="memdesc:a2254c13cc469d401eaa0833a3d4a4034 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Select if the layer should draw only inside margins or over all DC. Default : false. <br /></td></tr>
 <tr class="separator:a2254c13cc469d401eaa0833a3d4a4034 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6388b1d9d1480546c27d00eb989fe818 inherit pro_attribs_classmp_layer" id="r_a6388b1d9d1480546c27d00eb989fe818"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_visible</b> = false</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_visible</b> = true</td></tr>
 <tr class="memdesc:a6388b1d9d1480546c27d00eb989fe818 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Toggles layer visibility. Default : true. <br /></td></tr>
 <tr class="separator:a6388b1d9d1480546c27d00eb989fe818 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa3ea60fa1be7315614cea3124e5d69c2 inherit pro_attribs_classmp_layer" id="r_aa3ea60fa1be7315614cea3124e5d69c2"><td class="memItemLeft" align="right" valign="top">
@@ -451,7 +451,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_tractable</b> = fal
 <tr class="memdesc:aa3ea60fa1be7315614cea3124e5d69c2 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the layer tractable. <br /></td></tr>
 <tr class="separator:aa3ea60fa1be7315614cea3124e5d69c2 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab36829f686179b68375f181400329383 inherit pro_attribs_classmp_layer" id="r_ab36829f686179b68375f181400329383"><td class="memItemLeft" align="right" valign="top">
-int&#160;</td><td class="memItemRight" valign="bottom"><b>m_flags</b> = 0</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>m_flags</b> = <a class="el" href="mathplot_8h.html#aa628da57cd09f8c7357e5caf388b5538a745266ad1df6226b86f27e9d3f46ee9b">mpALIGN_SE</a></td></tr>
 <tr class="memdesc:ab36829f686179b68375f181400329383 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Holds label alignment. Default : mpALIGN_SW for series and mpALIGN_CENTER for scale. <br /></td></tr>
 <tr class="separator:ab36829f686179b68375f181400329383 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a64a14a22b372feff804190f4da408eba inherit pro_attribs_classmp_layer" id="r_a64a14a22b372feff804190f4da408eba"><td class="memItemLeft" align="right" valign="top">
@@ -459,7 +459,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>m_flags</b> = 0</td></
 <tr class="memdesc:a64a14a22b372feff804190f4da408eba inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">The boundaries for plotting curve calculated by <a class="el" href="classmp_window.html" title="Canvas for plotting mpLayer implementations.">mpWindow</a>. <br /></td></tr>
 <tr class="separator:a64a14a22b372feff804190f4da408eba inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a62dea60b6a809330729ec11d41240481 inherit pro_attribs_classmp_layer" id="r_a62dea60b6a809330729ec11d41240481"><td class="memItemLeft" align="right" valign="top">
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_CanDelete</b> = false</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>m_CanDelete</b> = true</td></tr>
 <tr class="memdesc:a62dea60b6a809330729ec11d41240481 inherit pro_attribs_classmp_layer"><td class="mdescLeft">&#160;</td><td class="mdescRight">Is the layer can be deleted. <br /></td></tr>
 <tr class="separator:a62dea60b6a809330729ec11d41240481 inherit pro_attribs_classmp_layer"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a166c7f930aa85c4e2de529c682a3fdd7 inherit pro_attribs_classmp_layer" id="r_a166c7f930aa85c4e2de529c682a3fdd7"><td class="memItemLeft" align="right" valign="top">
