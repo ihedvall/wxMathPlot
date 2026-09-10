@@ -119,6 +119,7 @@ typedef std::optional<int> mpOptional_int;
 #include <cmath>
 #include <deque>
 #include <algorithm>
+#include "mpcolourscheme.h"
 
 #if defined(MP_USER_INCLUDE)
   /// Expand a macro argument to a string literal.
@@ -268,11 +269,7 @@ struct mpRange
     T max = 0;  //!< The max value of the range
 
     /// Default constructor
-    mpRange()
-    {
-      min = 0;
-      max = 0;
-    }
+    mpRange() = default;
 
     /// Create range with the 2 values
     mpRange(T value1, T value2)
@@ -1156,17 +1153,17 @@ class WXDLLIMPEXP_MATHPLOT mpLayer: public wxObject
     mpWindow* m_win = nullptr;            //!< The wxWindow handle
     int m_subtype = 0;              //!< Layer sub type, set in constructors
     wxFont m_font;              //!< Layer's font
-    wxColour m_fontcolour;      //!< Layer's font foreground colour
-    wxPen m_pen;                //!< Layer's pen. Default Colour = Black, width = 1, style = wxPENSTYLE_SOLID
-    wxBrush m_brush;            //!< Layer's brush. Default wxTRANSPARENT_BRUSH
+    wxColour m_fontcolour = mpColourScheme::Instance().GetDefaultFgColour();  //!< Layer's font foreground colour
+    wxPen m_pen = {mpColourScheme::Instance().GetDefaultFgColour(), 1, wxPENSTYLE_SOLID}; //!< Layer's pen. Default Colour = Black, width = 1, style = wxPENSTYLE_SOLID
+    wxBrush m_brush = {mpColourScheme::Instance().GetDefaultBgColour(), wxBRUSHSTYLE_TRANSPARENT}; //!< Layer's brush. Default wxTRANSPARENT_BRUSH
     wxString m_name;            //!< Layer's name
     bool m_showName = false;            //!< States whether the name of the layer must be shown. Default : false
     bool m_drawOutsideMargins = false;  //!< Select if the layer should draw only inside margins or over all DC. Default : false
-    bool m_visible = false;             //!< Toggles layer visibility. Default : true
+    bool m_visible = true;             //!< Toggles layer visibility. Default : true
     bool m_tractable = false;           //!< Is the layer tractable
-    int m_flags = 0;                //!< Holds label alignment. Default : mpALIGN_SW for series and mpALIGN_CENTER for scale
+    int m_flags = mpALIGN_SE;                //!< Holds label alignment. Default : mpALIGN_SW for series and mpALIGN_CENTER for scale
     mpRect m_plotBoundaries = {};    //!< The boundaries for plotting curve calculated by mpWindow
-    bool m_CanDelete = false;           //!< Is the layer can be deleted
+    bool m_CanDelete = true;           //!< Is the layer can be deleted
     mpLayerZOrder m_ZIndex = mpZIndex_BACKGROUND;     //!< The index in Z-Order to draw the layer
 
     /** Initialize the context
@@ -1197,7 +1194,7 @@ class WXDLLIMPEXP_MATHPLOT mpLayer: public wxObject
     void CheckLog(double *x, double *y, int yAxisID) const;
 
   private:
-    bool m_busy;          //!< Test if we are busy (plot operation)
+    bool m_busy = false;          //!< Test if we are busy (plot operation)
 
 
   DECLARE_DYNAMIC_CLASS_MATHPLOT(mpLayer);
@@ -1219,10 +1216,13 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLayer: public mpLayer
     mpInfoLayer();
 
     /** Complete constructor.
-     @param pos Sets the initial position in percent of the rectangle of the layer.
+     @param pos Sets the initial position in percent of the rectangle of the
+     layer.
      @param brush pointer to a fill brush. Default is transparent
      @param location to place in the margin or free */
-    mpInfoLayer(const wxPoint& pos, const wxBrush &brush = *wxTRANSPARENT_BRUSH, mpLocation location = mpMarginUser);
+    explicit mpInfoLayer(const wxPoint& pos,
+                         const wxBrush &brush = *wxTRANSPARENT_BRUSH,
+                         mpLocation location = mpMarginUser);
 
     /** Destructor */
     ~mpInfoLayer() override;
@@ -1338,7 +1338,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoCoords: public mpInfoLayer
     mpInfoCoords();
 
     /** Limited constructor */
-    mpInfoCoords(mpLocation location);
+    explicit mpInfoCoords(mpLocation location);
 
     /** Complete constructor, setting initial rectangle and background brush.
      @param pos The initial position in percent of the rectangle.
@@ -1347,9 +1347,8 @@ class WXDLLIMPEXP_MATHPLOT mpInfoCoords: public mpInfoLayer
     mpInfoCoords(wxPoint pos, const wxBrush &brush = *wxTRANSPARENT_BRUSH, mpLocation location = mpMarginUser);
 
     /** Default destructor */
-    ~mpInfoCoords() override {
-      ;
-    }
+    ~mpInfoCoords() override = default;
+
 
     /** Update the content of the info box. Used to update coordinates.
      @param w parent mpWindow from which to obtain information
@@ -1426,14 +1425,14 @@ class WXDLLIMPEXP_MATHPLOT mpInfoCoords: public mpInfoLayer
     void DrawContent(wxDC &dc, const mpWindow &w);
 
   protected:
-    bool m_show;              //!< Indicates if magnet shall be shown in plot
+    bool m_show = false;              //!< Indicates if magnet shall be shown in plot
     wxString m_content;       //!< string holding the coordinates to be drawn.
-    mpLabelType m_labelType;  //!< Label formatting mode used for the X coordinate display.
-    unsigned int m_timeConv;  //!< Time conversion mode used when formatting date/time X values.
-    wxCoord m_mouseX;         //!< Last mouse X position in window pixel coordinates.
-    wxCoord m_mouseY;         //!< Last mouse Y position in window pixel coordinates.
-    bool m_series_coord;      //!< True to show the nearest plotted series value instead of raw mouse Y coordinates.
-    wxPen m_penSeries;        //!< Pen used to draw the series marker when series-coordinate mode is active.
+    mpLabelType m_labelType = mpLabel_AUTO;  //!< Label formatting mode used for the X coordinate display.
+    unsigned int m_timeConv = 0;  //!< Time conversion mode used when formatting date/time X values.
+    wxCoord m_mouseX = 0;         //!< Last mouse X position in window pixel coordinates.
+    wxCoord m_mouseY = 0;         //!< Last mouse Y position in window pixel coordinates.
+    bool m_series_coord = false;      //!< True to show the nearest plotted series value instead of raw mouse Y coordinates.
+    wxPen m_penSeries = {mpColourScheme::Instance().GetDefaultFgColour()};        //!< Pen used to draw the series marker when series-coordinate mode is active.
 
     /** Plot method.
      @param dc the device content where to plot
@@ -1586,9 +1585,9 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLegend: public mpInfoLayer
     mpOptional_int m_lastHoveredAxisID = std::nullopt;    //!< last axis ID that was hovered when dragging series
 
   protected:
-    mpLegendStyle m_item_mode;          //!< Visual style used for each legend entry.
-    mpLegendDirection m_item_direction; //!< Layout direction used when arranging legend entries.
-    bool m_showDraggedSeries;           //!< Indicate if series that has been gripped with mouse shall be drawn
+    mpLegendStyle m_item_mode = mpLegendLine;          //!< Visual style used for each legend entry.
+    mpLegendDirection m_item_direction = mpVertical; //!< Layout direction used when arranging legend entries.
+    bool m_showDraggedSeries = false;           //!< Indicate if series that has been gripped with mouse shall be drawn
     wxString m_headerString = wxString::FromUTF8("≡");  //!< "Hamburger" symbol used for grip the legend
 
     /** Plot method.
@@ -1607,7 +1606,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLegend: public mpInfoLayer
     };
     std::vector<LegendDetail> m_LegendDetailList; //!< list (well, vector) of details for each individual plot's legend component
     wxCoord m_headerEnd = 0;                //!< End position of header row in box, used to check if header has been clicked
-    bool m_needs_update = false;                //!< Do we need to redraw the legend bitmap? Set when a plot function changes (name, visibility, add or remove)
+    bool m_needs_update = true;                //!< Do we need to redraw the legend bitmap? Set when a plot function changes (name, visibility, add or remove)
     int m_maxSeriesValueWidth = 0;          //!< Keep track of the widest series value text
     bool m_enableSeriesValues = false;          //!< Enables to show series values in legend
     bool m_showSeriesValues = false;            //!< Shall series values be drawn to plot
@@ -1815,12 +1814,12 @@ class WXDLLIMPEXP_MATHPLOT mpFunction: public mpLayer
   protected:
     bool m_continuous = false;            //!< Specify if the layer will be plotted as a continuous line or a set of points. Default false
     mpSymbol m_symbol = mpsNone;            //!< A symbol for the plot in place of point. Default mpNone
-    int m_symbolSize = 0;             //!< Size of the symbol. Default 6
+    int m_symbolSize = 6;             //!< Size of the symbol. Default 6
     unsigned int m_step = 0;          //!< Step to get point to be draw. Default : 1
     int m_yAxisID = 0;                //!< The ID of the Y axis used by the function. Equal 0 if no axis.
-    bool m_LegendIsAlwaysVisible = false; //!< If true, the name is visible in the legend despite the visibility of the function. Default false
+    bool m_LegendIsAlwaysVisible = true; //!< If true, the name is visible in the legend despite the visibility of the function. Default false
     bool m_autoStep = false;              //!< Calculates m_step automatically based on how many points you want to draw
-    size_t m_maxNOfPoints = 0;        //!< Maximum number of points to draw to screen
+    size_t m_maxNOfPoints = 3000;        //!< Maximum number of points to draw to screen
 
   private:
     DECLARE_DYNAMIC_CLASS_MATHPLOT(mpFunction);
@@ -1837,7 +1836,7 @@ class WXDLLIMPEXP_MATHPLOT mpLine: public mpFunction
      * @param value default value for the line
      * @param pen the pen object to draw the line (default a green pen)
      */
-    mpLine(double value, const wxPen &pen = *wxGREEN_PEN);
+    mpLine(double value, const wxPen &pen = mpColourScheme::Instance().GetLinePen(0));
 
     // We don't want to include line (horizontal or vertical) in BBox computation
     bool HasBBox() override
@@ -1870,8 +1869,8 @@ class WXDLLIMPEXP_MATHPLOT mpLine: public mpFunction
     }
 
   protected:
-    double m_value;        //!< The x or y coordinates of the line
-    bool m_IsHorizontal;   //!< Is the line horizontal? Default false
+    double m_value = 0.0;        //!< The x or y coordinates of the line
+    bool m_IsHorizontal = false;   //!< Is the line horizontal? Default false
 
   private:
     DECLARE_DYNAMIC_CLASS_MATHPLOT(mpLine);
@@ -1888,7 +1887,9 @@ class WXDLLIMPEXP_MATHPLOT mpHorizontalLine: public mpLine
      * @param pen the pen object to draw the line (default a green pen)
      * @param yAxisID ID of the y axis (default 0, the first y axis)
      */
-    mpHorizontalLine(double yvalue, const wxPen &pen = *wxGREEN_PEN, unsigned int yAxisID = 0);
+    mpHorizontalLine(double yvalue,
+                     const wxPen &pen = mpColourScheme::Instance().GetLinePen(0),
+                     unsigned int yAxisID = 0);
 
     /** Set y
      @param yvalue
@@ -1915,7 +1916,7 @@ class WXDLLIMPEXP_MATHPLOT mpVerticalLine: public mpLine
      * @param xvalue the x-coordinate of the vertical line
      * @param pen the pen object to draw the line (default a green pen)
      */
-    mpVerticalLine(double xvalue, const wxPen &pen = *wxGREEN_PEN);
+    mpVerticalLine(double xvalue, const wxPen &pen = mpColourScheme::Instance().GetLinePen(0));
 
     /** Set x
      @param xvalue
@@ -2405,7 +2406,7 @@ class mpFXGeneric: public mpFX
     mpFXGeneric(const wxString &name = wxT("Generic FX function"), int flags = mpALIGN_LEFT, unsigned int yAxisID = 0) :
         mpFX(name, flags, yAxisID)
     {
-      wxPen FXpen(*wxBLUE, 1, wxPENSTYLE_SOLID);
+      wxPen FXpen(mpColourScheme::Instance().GetAxisColour(), 1, wxPENSTYLE_SOLID);
       SetDrawOutsideMargins(false);
       SetContinuity(true);
       SetPen(FXpen);
@@ -2643,10 +2644,10 @@ class WXDLLIMPEXP_MATHPLOT mpBarChart: public mpChart
 
   protected:
 
-    double m_width = 0.0;        //!< Width of each bar/column in plot units.
-    wxColour m_barColour;  //!< Fill colour used for the bars.
+    double m_width = 0.0;      //!< Width of each bar/column in plot units.
+    wxColour m_barColour;      //!< Fill colour used for the bars.
     int m_labelPos = 0;        //!< Bar-label placement mode.
-    double m_labelAngle = 0.0;   //!< Rotation angle used for bar labels, in degrees.
+    double m_labelAngle = 0.0; //!< Rotation angle used for bar labels, in degrees.
 
     /** Layer plot handler.
      This implementation will plot the a rectangle for each point from
@@ -2995,18 +2996,18 @@ class WXDLLIMPEXP_MATHPLOT mpScale: public mpLayer
     static constexpr wxCoord kTickSize = 4;       //!< Length of tick line
     static constexpr wxCoord kAxisExtraSpace = 6; //!< Extra space for axis to make it look good
 
-    int m_axisID;                //!< Unique ID that identify this axis. Default -1 mean that axis is not used.
-    wxPen m_gridpen;             //!< Grid's pen. Default Colour = LIGHT_GREY, width = 1, style = wxPENSTYLE_DOT
-    bool m_ticks;                //!< Flag to show ticks. Default true
-    bool m_grids;                //!< Flag to show grids. Default false
-    bool m_auto;                 //!< Flag to autosize grids. Default true
+    int m_axisID = -1;                //!< Unique ID that identify this axis. Default -1 mean that axis is not used.
+    wxPen m_gridpen = mpColourScheme::Instance().GetAxisColour();             //!< Grid's pen. Default Colour = LIGHT_GREY, width = 1, style = wxPENSTYLE_DOT
+    bool m_ticks = true;                //!< Flag to show ticks. Default true
+    bool m_grids = false;                //!< Flag to show grids. Default false
+    bool m_auto = true;                 //!< Flag to autosize grids. Default true
     mpRange<double> m_axisRange; //!< Range axis values when autosize is false
-    mpLabelType m_labelType;     //!< Select labels mode: mpLabel_AUTO for normal labels, mpLabel_TIME for time axis in hours, minutes, seconds
-    unsigned int m_timeConv;     //!< Selects if time has to be converted to local time or not.
+    mpLabelType m_labelType = mpLabel_TIME;     //!< Select labels mode: mpLabel_AUTO for normal labels, mpLabel_TIME for time axis in hours, minutes, seconds
+    unsigned int m_timeConv = MP_X_RAWTIME;     //!< Selects if time has to be converted to local time or not.
     wxString m_labelFormat;      //!< Format string used to print labels
-    bool m_isLog;                //!< Is the axis a log axis ?
+    bool m_isLog = false;                //!< Is the axis a log axis ?
     bool m_hover = false;        //!< Indicate if axis is hovered by mouse while dragging a series onto it
-    bool m_CoordIsAlwaysVisible; //!< If true, the mouse coordinates is visible in the info coordinates despite the visibility of the axis. Default true
+    bool m_CoordIsAlwaysVisible = true; //!< If true, the mouse coordinates is visible in the info coordinates despite the visibility of the axis. Default true
 
     /// virtual function to compute origin of the axis
     /// @param w Current window
@@ -4556,7 +4557,7 @@ class WXDLLIMPEXP_MATHPLOT mpWindow: public wxWindow
 
   protected:
     virtual void BindEvents();                                //!< Connect all events
-    virtual void OnPaint(wxPaintEvent &event);                    //!< Paint handler, will plot all attached layers
+    virtual void OnMpPaint(wxPaintEvent &event);                    //!< Paint handler, will plot all attached layers
     virtual void OnSize(wxSizeEvent &event);                      //!< Size handler, will update scroll bar sizes
     virtual void OnShowPopupMenu(wxMouseEvent &event);            //!< Mouse handler, will show context menu
     virtual void OnCenter(wxCommandEvent &event);                 //!< Center handler
@@ -4811,9 +4812,9 @@ class WXDLLIMPEXP_MATHPLOT mpText: public mpLayer
     }
 
   protected:
-    int m_offsetx;  //!< Holds offset for X in percentage
-    int m_offsety;  //!< Holds offset for Y in percentage
-    mpLocation m_location;  //!< The location of the text @sa mpLocation
+    int m_offsetx = 0;  //!< Holds offset for X in percentage
+    int m_offsety = 0;  //!< Holds offset for Y in percentage
+    mpLocation m_location = mp_Location_Type::mpCursor;  //!< The location of the text @sa mpLocation
 
     /** Text Layer plot handler.
      This implementation will plot text adjusted to the visible area. */
@@ -4838,9 +4839,10 @@ class WXDLLIMPEXP_MATHPLOT mpTitle: public mpText
     mpTitle(const wxString &name) :
         mpText(name, mpMarginTopCenter)
     {
+      const auto& scheme = mpColourScheme::Instance();
       m_subtype = mptTitle;
-      SetPen(*wxWHITE_PEN);
-      SetBrush(*wxWHITE_BRUSH);
+      SetPen(scheme.GetDefaultBgColour());
+      SetBrush(scheme.GetDefaultBgColour());
     }
 
   private:

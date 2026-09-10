@@ -8,6 +8,8 @@
  **************************************************************/
 
 #include "MathPlotDemoMain.h"
+
+#include <cstdint>
 #include <wx/wx.h>
 #include <wx/msgdlg.h>
 
@@ -21,9 +23,52 @@
 
 #include <wx/tipwin.h>
 #include "Sample.h"
-
+namespace {
 //helper functions
-enum wxBuildInfoFormat { short_f, long_f };
+enum wxBuildInfoFormat { short_f [[maybe_unused]], long_f };
+
+// Function to interpolate between two colors
+wxColour InterpolateColor(const wxColour& start, const wxColour& end, double factor)
+{
+  wxColour colour(
+    start.Red() + static_cast<uint8_t>(factor * (end.Red() - start.Red())),
+    start.Green() + static_cast<uint8_t>(factor * (end.Green() - start.Green())),
+    start.Blue()  + static_cast<uint8_t>(factor * (end.Blue() - start.Blue())),
+    start.Alpha() + static_cast<uint8_t>(factor * (end.Alpha() - start.Alpha()))
+  );
+  return colour;
+}
+
+
+// Create a wxImage with a rainbow gradient
+wxImage CreateRainbowImage(int width, int height, bool withAlpha = false)
+{
+  wxImage image(width, height);
+
+  if (withAlpha) {
+    image.InitAlpha(); // Initialize the alpha channel
+  }
+
+  // Define colors for gradient
+  wxColour startColor(255, 0, 0);   // Red
+  wxColour endColor(0, 0, 255);     // Blue
+
+  for (int x = 0; x < width; ++x) {
+    double factor = static_cast<double>(x) / (width - 1);
+    wxColour currentColor = InterpolateColor(startColor, endColor, factor);
+
+    for (int y = 0; y < height; ++y) {
+      image.SetRGB(x, y, currentColor.Red(), currentColor.Green(), currentColor.Blue());
+      if (withAlpha) {
+        image.SetAlpha(x, y, 255 - static_cast<unsigned char>(factor * 255)); // Optional transparency
+      }
+    }
+  }
+
+  return image;
+}
+
+}
 
 static wxString wxBuildInfo(wxBuildInfoFormat format)
 {
@@ -61,20 +106,13 @@ MathPlotDemoFrame::MathPlotDemoFrame(wxWindow* parent, wxWindowID id)
 {
     (void) id; // Compiler happy
     //(*Initialize(MathPlotDemoFrame)
-    wxBoxSizer * BoxSizer2;
-    wxMenu* Menu1;
-    wxMenu* Menu3;
-    wxMenuBar* MenuBar1;
-    wxMenuItem* miAbout;
-    wxMenuItem* miPreview;
-    wxMenuItem* miQuit;
 
     Create(parent, wxID_ANY, _("MathPlot Demo"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(800,450));
     AuiManager1 = new wxAuiManager(this, wxAUI_MGR_ALLOW_ACTIVE_PANE|wxAUI_MGR_DEFAULT);
     pDemo = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     pDemo->SetMinSize(wxSize(140,-1));
-    BoxSizer2 = new wxBoxSizer(wxVERTICAL);
+    auto *BoxSizer2 = new wxBoxSizer(wxVERTICAL);
     bDraw = new wxButton(pDemo, wxID_ANY, _("Draw sinus"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
     BoxSizer2->Add(bDraw, 0, wxALL|wxEXPAND, 10);
     bSample = new wxButton(pDemo, wxID_ANY, _("Draw Sample"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
@@ -104,7 +142,7 @@ MathPlotDemoFrame::MathPlotDemoFrame(wxWindow* parent, wxWindowID id)
     pDemo->SetSizer(BoxSizer2);
     AuiManager1->AddPane(pDemo, wxAuiPaneInfo().Name(_T("PaneName0")).DefaultPane().Caption(_("Demo")).CloseButton(false).Left().TopDockable(false).BottomDockable(false).RightDockable(false).MinSize(wxSize(140,-1)).Movable(false));
     pPlot = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-    wxBoxSizer *BoxSizer1 = new wxBoxSizer(wxVERTICAL);
+    auto *BoxSizer1 = new wxBoxSizer(wxVERTICAL);
     mPlot = new mpWindow(pPlot, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     mPlot->UpdateAll();
     mPlot->Fit();
@@ -112,24 +150,27 @@ MathPlotDemoFrame::MathPlotDemoFrame(wxWindow* parent, wxWindowID id)
     pPlot->SetSizer(BoxSizer1);
     AuiManager1->AddPane(pPlot, wxAuiPaneInfo().Name(_T("PaneName1")).DefaultPane().Caption(_("Plot")).CaptionVisible().MaximizeButton().CloseButton(false).Center());
     AuiManager1->Update();
-    MenuBar1 = new wxMenuBar();
-    Menu1 = new wxMenu();
-    miPreview = new wxMenuItem(Menu1, idMenuPreview, _("Print Preview"), wxEmptyString, wxITEM_NORMAL);
+    auto *MenuBar1 = new wxMenuBar();
+    auto *Menu1 = new wxMenu();
+    auto *miPreview = new wxMenuItem(
+        Menu1, idMenuPreview, _("Print Preview"), wxEmptyString, wxITEM_NORMAL);
     miPreview->SetBitmap(wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_FULL_SCREEN")),wxART_MENU));
     Menu1->Append(miPreview);
     miPrint = new wxMenuItem(Menu1, idMenuPrint, _("Print"), wxEmptyString, wxITEM_NORMAL);
     miPrint->SetBitmap(wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_PRINT")),wxART_MENU));
     Menu1->Append(miPrint);
-    miQuit = new wxMenuItem(Menu1, idMenuExit, _("Exit\tAlt-X"), wxEmptyString, wxITEM_NORMAL);
+    auto *miQuit = new wxMenuItem(Menu1, idMenuExit, _("Exit\tAlt-X"),
+                                        wxEmptyString, wxITEM_NORMAL);
     miQuit->SetBitmap(wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_QUIT")),wxART_MENU));
     Menu1->Append(miQuit);
     MenuBar1->Append(Menu1, _("File"));
-    Menu3 = new wxMenu();
-    miAbout = new wxMenuItem(Menu3, idMenuAbout, _("About\tF1"), wxEmptyString, wxITEM_NORMAL);
+    auto *Menu3 = new wxMenu();
+    auto *miAbout = new wxMenuItem(Menu3, idMenuAbout, _("About\tF1"),
+                                         wxEmptyString, wxITEM_NORMAL);
     miAbout->SetBitmap(wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_INFORMATION")),wxART_MENU));
     Menu3->Append(miAbout);
     MenuBar1->Append(Menu3, _("Help"));
-    SetMenuBar(MenuBar1);
+    wxFrameBase::SetMenuBar(MenuBar1);
     Timer.SetOwner(this, ID_TIMER);
     Timer.Start(25, false);
 
@@ -163,7 +204,7 @@ MathPlotDemoFrame::~MathPlotDemoFrame()
   delete AuiManager1;    // Nadler bugfix: wxSmith-generated code fails to delete AUI manager and leaks memory
 }
 
-void MathPlotDemoFrame::InitializePlot(void)
+void MathPlotDemoFrame::InitializePlot()
 {
 #if defined(MP_ENABLE_CONFIG) || defined(ENABLE_MP_CONFIG)
   // Create config file
@@ -203,7 +244,7 @@ void MathPlotDemoFrame::InitializePlot(void)
   info->SetVisible(true);
 
   // Add a legend info layer
-  mpInfoLegend* legend = new mpInfoLegend();
+  auto* legend = new mpInfoLegend();
   legend->EnableSeriesValues(true);
   mPlot->AddLayer(legend, false);
   legend->SetItemDirection(mpHorizontal); // Note: Comment out this line to test mpVertical
@@ -217,7 +258,7 @@ void MathPlotDemoFrame::InitializePlot(void)
 #endif
 }
 
-void MathPlotDemoFrame::CleanPlot(void)
+void MathPlotDemoFrame::CleanPlot()
 {
   // Stop timer for moving object
   Timer.Stop();
@@ -269,14 +310,13 @@ void MathPlotDemoFrame::OnbBarClick(wxCommandEvent &WXUNUSED(event))
 {
   CleanPlot();
 
-  mpFXYVector* vectorLayer = new mpFXYVector(_T("Bar X²"), mpALIGN_NE, true);
+  auto* vectorLayer = new mpFXYVector(wxString::FromUTF8("Bar X²"), mpALIGN_NE, true);
   vectorLayer->SetBrush(*wxGREEN);
   // Create two vectors for x,y and fill them with data
   std::vector<double> vectorx, vectory;
-  double xcoord;
   for (unsigned int p = 0; p <= 20; p++)
   {
-    xcoord = ((double)p - 10.0) * 5.0;
+    double xcoord = (static_cast<double>(p) - 10.0) * 5.0;
     vectorx.push_back(xcoord);
     vectory.push_back(0.001 * pow(xcoord, 2));
   }
@@ -312,7 +352,7 @@ void MathPlotDemoFrame::OnbLogXYClick(wxCommandEvent &WXUNUSED(event))
     vectorY.push_back(i);
   }
 
-  mpFXYVector* Power2 = new mpFXYVector(_("Power of 2"), mpALIGN_NE, false);
+  auto* Power2 = new mpFXYVector(_("Power of 2"), mpALIGN_NE, false);
   Power2->SetData(vectorX, vectorY);
   Power2->SetContinuity(true);
   wxPen s1pen(*wxGREEN, 2, wxPENSTYLE_SOLID);
@@ -327,7 +367,7 @@ void MathPlotDemoFrame::OnbLogXYClick(wxCommandEvent &WXUNUSED(event))
 void MathPlotDemoFrame::OnbChartClick(wxCommandEvent &event)
 {
   CleanPlot();
-  wxButton* bt = wxDynamicCast(event.GetEventObject(), wxButton);
+  auto* bt = dynamic_cast<wxButton*>(event.GetEventObject());
   mpChart* Chart;
   if (bt == bBarChart)
     Chart = new mpBarChart(_T("BarChart"));
@@ -335,33 +375,31 @@ void MathPlotDemoFrame::OnbChartClick(wxCommandEvent &event)
     Chart = new mpPieChart(_T("PieChart"));
   // Create vector for y and fill it with data
   std::vector<double> vectory;
-  double ycoord;
   for (unsigned int p = 0; p < 5; p++)
   {
-    ycoord = 1.5 * ((double)p) + 1.0;
+    double ycoord = 1.5 * static_cast<double>(p) + 1.0;
     vectory.push_back(ycoord);
   }
   Chart->SetChartValues(vectory);
-  std::vector < std::string > labels;
-  std::string label;
-  label.assign("Blue");
-  labels.push_back(label);
-  label.assign("Red");
-  labels.push_back(label);
-  label.assign("Green");
-  labels.push_back(label);
-  label.assign("Purple");
-  labels.push_back(label);
-  label.assign("Yellow");
-  labels.push_back(label);
-  Chart->SetChartLabels(labels);
-  if (bt == bBarChart)
+
+  const auto& scheme = mpColourScheme::Instance();
+  std::vector < std::string > labels(5);
+  labels[0] = scheme.GetIndexColourName(0);
+  labels[1] = scheme.GetIndexColourName(1);
+  labels[2] = scheme.GetIndexColourName(2);
+  labels[3] = scheme.GetIndexColourName(3);
+  labels[4] = scheme.GetIndexColourName(4);
+
+  auto* bar_chart = dynamic_cast<mpBarChart*>(Chart);
+  auto* pie_chart = dynamic_cast<mpPieChart*>(Chart);
+  if (bar_chart != nullptr)
   {
-    ((mpBarChart*)Chart)->SetBarColour(wxColour(125, 200, 255));
-    ((mpBarChart*)Chart)->SetBarLabelPosition(mpBAR_TOP);
+    bar_chart->SetBarColour(wxColour(125, 200, 255));
+    bar_chart->SetBarLabelPosition(mpBAR_TOP);
   }
-  else
+  else if (pie_chart != nullptr)
   {
+    pie_chart->SetChartLabels(labels);
     /*
     // We can pass our colors or pie use default colors
     std::vector < wxColour > colors;
@@ -389,44 +427,7 @@ void MathPlotDemoFrame::OncbFreeLineClick(wxCommandEvent &WXUNUSED(event))
     mPlot->UnSetOnUserMouseAction();
 }
 
-// Function to interpolate between two colors
-wxColour InterpolateColor(const wxColour& start, const wxColour& end, double factor)
-{
-  return wxColour(
-      start.Red()   + factor * (end.Red() - start.Red()),
-      start.Green() + factor * (end.Green() - start.Green()),
-      start.Blue()  + factor * (end.Blue() - start.Blue()),
-      start.Alpha() + factor * (end.Alpha() - start.Alpha())
-  );
-}
 
-// Create a wxImage with a rainbow gradient
-wxImage CreateRainbowImage(int width, int height, bool withAlpha = false)
-{
-  wxImage image(width, height);
-
-  if (withAlpha) {
-      image.InitAlpha(); // Initialize the alpha channel
-  }
-
-  // Define colors for gradient
-  wxColour startColor(255, 0, 0);   // Red
-  wxColour endColor(0, 0, 255);     // Blue
-
-  for (int x = 0; x < width; ++x) {
-      double factor = static_cast<double>(x) / (width - 1);
-      wxColour currentColor = InterpolateColor(startColor, endColor, factor);
-
-      for (int y = 0; y < height; ++y) {
-          image.SetRGB(x, y, currentColor.Red(), currentColor.Green(), currentColor.Blue());
-          if (withAlpha) {
-              image.SetAlpha(x, y, 255 - static_cast<unsigned char>(factor * 255)); // Optional transparency
-          }
-      }
-  }
-
-  return image;
-}
 
 void MathPlotDemoFrame::OnbImageClick(wxCommandEvent &WXUNUSED(event))
 {
@@ -434,7 +435,7 @@ void MathPlotDemoFrame::OnbImageClick(wxCommandEvent &WXUNUSED(event))
 
   // Create rainbow image
   wxImage rainbowImage = CreateRainbowImage(512, 512, true);
-  mpBitmapLayer* bitmapLayer = new mpBitmapLayer();
+  auto* bitmapLayer = new mpBitmapLayer();
   bitmapLayer->SetBitmap(rainbowImage, 0, 0, 512, 512);
 
   mPlot->AddLayer(bitmapLayer);
@@ -448,7 +449,7 @@ void MathPlotDemoFrame::OnUserMouseAction(void *Sender, wxMouseEvent &event, boo
   #endif
 
   // Cast Sender to mpWindow and convert the coordinates
-  mpWindow* plotWindow = (mpWindow*)Sender;
+  auto* plotWindow = static_cast<mpWindow *>(Sender);
 
   // Get the mouse position relative to the mpWindow
   wxPoint mousePosition = event.GetPosition();
@@ -468,7 +469,7 @@ void MathPlotDemoFrame::OnUserMouseAction(void *Sender, wxMouseEvent &event, boo
     isDragging = true;
 
     CurrentPolyline = new mpFXYVector("New polyline");
-    wxColour random_color = wxIndexColour(colorIndex++);
+    wxColour random_color = static_cast<wxColour>(wxIndexColour(colorIndex++));
     CurrentPolyline->SetPen(wxPen(random_color, 2));
     CurrentPolyline->SetContinuity(true);
 
@@ -548,10 +549,11 @@ void MathPlotDemoFrame::OnmiAboutSelected(wxCommandEvent &WXUNUSED(event))
 void MathPlotDemoFrame::OnmiPreviewSelected(wxCommandEvent &WXUNUSED(event))
 {
   // Pass two printout objects: for preview, and possible printing.
-  mpPrintout* plotPrint = new mpPrintout(mPlot);
-  mpPrintout* plotPrintPreview = new mpPrintout(mPlot);
-  wxPrintPreview* preview = new wxPrintPreview(plotPrintPreview, plotPrint);
-  wxPreviewFrame* frame = new wxPreviewFrame(preview, this, wxT("Print Plot"), wxPoint(100, 100), wxSize(600, 650));
+  auto* plotPrint = new mpPrintout(mPlot);
+  auto* plotPrintPreview = new mpPrintout(mPlot);
+  auto* preview = new wxPrintPreview(plotPrintPreview, plotPrint);
+  auto* frame = new wxPreviewFrame(preview, this, wxT("Print Plot"),
+    wxPoint(100, 100), wxSize(600, 650));
   frame->Centre(wxBOTH);
   frame->Initialize();
   frame->Show(true);
@@ -586,12 +588,12 @@ void MathPlotDemoFrame::OnbMultiYAxisClick(wxCommandEvent &WXUNUSED(event))
   bottomAxis->SetAlign(mpALIGN_BOTTOM);
   bottomAxis->SetPen(axispen);
 
-  MyLissajoux* f1 = new MyLissajoux(125.0);
+  auto* f1 = new MyLissajoux(125.0);
   f1->SetDrawOutsideMargins(false);
   f1->SetPen(wxPen(plotColors[0], 2));
   mPlot->AddLayer(f1, false, false);
 
-  mpScaleY *axis1 = new mpScaleY(f1->GetName(), mpALIGN_LEFT, false);
+  auto *axis1 = new mpScaleY(f1->GetName(), mpALIGN_LEFT, false);
   axis1->SetCanDelete(false); // We can not delete this axis in IHM
   axis1->SetLabelFormat("%g");
   axis1->SetFont(graphFont);
@@ -601,13 +603,13 @@ void MathPlotDemoFrame::OnbMultiYAxisClick(wxCommandEvent &WXUNUSED(event))
   // This axis is dedicated for f1
   f1->SetYAxisID(axis1->GetAxisID());
 
-  MySIN* f2 = new MySIN(10.0, 220.0);
+  auto* f2 = new MySIN(10.0, 220.0);
   f2->SetDrawOutsideMargins(false);
   f2->SetPen(wxPen(plotColors[1], 2));
   f2->SetContinuity(true);
   mPlot->AddLayer(f2, false, false);
 
-  mpScaleY *axis2 = new mpScaleY(f2->GetName(), mpALIGN_LEFT, false);
+  auto *axis2 = new mpScaleY(f2->GetName(), mpALIGN_LEFT, false);
   axis2->SetCanDelete(false); // We can not delete this axis in IHM
   axis2->SetLabelFormat("%g");
   axis2->SetFont(graphFont);
@@ -617,13 +619,13 @@ void MathPlotDemoFrame::OnbMultiYAxisClick(wxCommandEvent &WXUNUSED(event))
   // This axis is dedicated for f2
   f2->SetYAxisID(axis2->GetAxisID());
 
-  MyFunction* f3 = new MyFunction();
+  auto* f3 = new MyFunction();
   f3->SetDrawOutsideMargins(false);
   f3->SetPen(wxPen(plotColors[2], 2));
   f3->SetContinuity(true);
   mPlot->AddLayer(f3, false, false);
 
-  mpScaleY *axis3 = new mpScaleY(f3->GetName(), mpALIGN_LEFT, false);
+  auto *axis3 = new mpScaleY(f3->GetName(), mpALIGN_LEFT, false);
   axis3->SetCanDelete(false); // We can not delete this axis in IHM
   axis3->SetLabelFormat("%g");
   axis3->SetFont(graphFont);
@@ -633,13 +635,13 @@ void MathPlotDemoFrame::OnbMultiYAxisClick(wxCommandEvent &WXUNUSED(event))
   // This axis is dedicated for f3
   f3->SetYAxisID(axis3->GetAxisID());
 
-  MyCOSinverse* f4 = new MyCOSinverse(10.0, 100.0);
+  auto* f4 = new MyCOSinverse(10.0, 100.0);
   f4->SetDrawOutsideMargins(false);
   f4->SetPen(wxPen(plotColors[3], 2));
   f4->SetContinuity(true);
   mPlot->AddLayer(f4, false, false);
 
-  mpScaleY *axis4 = new mpScaleY(f4->GetName(), mpALIGN_LEFT, false);
+  auto *axis4 = new mpScaleY(f4->GetName(), mpALIGN_LEFT, false);
   axis4->SetCanDelete(false); // We can not delete this axis in IHM
   axis4->SetLabelFormat("%g");
   axis4->SetFont(graphFont);
@@ -752,12 +754,14 @@ void MathPlotDemoFrame::OnbMovingObjectClick(wxCommandEvent &WXUNUSED(event))
   mPlot->GetLayerByName(wxT("Cov1"))->SetPen(wxPen(*wxRED, 2, wxPENSTYLE_SOLID));
   mPlot->GetLayerByName(wxT("Cov2"))->SetPen(wxPen(*wxBLUE, 2, wxPENSTYLE_SOLID));
 
-  mpMovableObject* obj;
-  obj = (mpMovableObject*)mPlot->GetLayerByName(wxT("Cov1"));
-  obj->SetCoordinateBase(-4, -4, 1);
-  obj = (mpMovableObject*)mPlot->GetLayerByName(wxT("Cov2"));
-  obj->SetCoordinateBase(12, 7, 0);
-
+  if (auto *obj1 = dynamic_cast<mpMovableObject *>(mPlot->GetLayerByName(wxT("Cov1")));
+      obj1 != nullptr) {
+    obj1->SetCoordinateBase(-4, -4, 1);
+  }
+  if (auto* obj2 = dynamic_cast<mpMovableObject *>(mPlot->GetLayerByName(wxT("Cov2")));
+      obj2 != nullptr) {
+    obj2->SetCoordinateBase(12, 7, 0);
+  }
   mPlot->Fit();
 
   Timer.Start(25);
@@ -765,8 +769,8 @@ void MathPlotDemoFrame::OnbMovingObjectClick(wxCommandEvent &WXUNUSED(event))
 
 void MathPlotDemoFrame::OnTimerTrigger(wxTimerEvent &WXUNUSED(event))
 {
-  mpMovableObject* obj = (mpMovableObject*)mPlot->GetLayerByName(wxT("car"));
-  if (obj)
+  if (auto* obj = dynamic_cast<mpMovableObject*>(mPlot->GetLayerByName(wxT("car")));
+      obj != nullptr)
   {
     double x, y, phi, v, w, At = Timer.GetInterval() * 0.001;
     obj->GetCoordinateBase(x, y, phi);

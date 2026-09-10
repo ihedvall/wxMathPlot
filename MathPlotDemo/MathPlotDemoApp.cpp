@@ -8,26 +8,30 @@
  **************************************************************/
 
 #include "MathPlotDemoApp.h"
+#include <locale>
 
-//(*AppHeaders
 #include "MathPlotDemoMain.h"
 #include <wx/image.h>
-//*)
 
-IMPLEMENT_APP(MathPlotDemoApp);
+IMPLEMENT_APP(MathPlotDemoApp); // NOLINT(*-pro-type-static-cast-downcast)
 
 bool MathPlotDemoApp::OnInit()
 {
-    //(*AppInitialize
-    bool wxsOK = true;
-    wxInitAllImageHandlers();
-    if ( wxsOK )
-    {
-    	MathPlotDemoFrame* Frame = new MathPlotDemoFrame(0);
-    	Frame->Show();
-    	SetTopWindow(Frame);
-    }
-    //*)
-    return wxsOK;
+  std::locale::global(std::locale(""));
+
+#if wxCHECK_VERSION(3,3,0)
+  SetAppearance(Appearance::System);
+  mpColourScheme::Instance().SetColourScheme(mp_Colour_Scheme::SystemMode);
+#endif
+  bool wxsOK = true;
+  wxInitAllImageHandlers();
+  if ( wxsOK )
+  {
+    auto* Frame = new MathPlotDemoFrame(nullptr);
+    Frame->Show();
+    SetTopWindow(Frame);
+  }
+
+  return wxsOK;
 
 }

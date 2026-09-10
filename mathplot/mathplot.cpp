@@ -15,6 +15,10 @@
 #pragma implementation "mathplot.h"
 #endif
 
+#if WIN32
+#define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #include <algorithm>
   #if (defined(__cplusplus) && (__cplusplus > 201703L))
     #include <numbers> // std::numbers::pi
@@ -235,13 +239,14 @@ mpLayer::mpLayer(mpLayerType layerType) :
 {
   // The wxWindow handle is not yet available
   m_win = nullptr;
+  const auto& scheme = mpColourScheme::Instance();
   // Default pen
-  SetPen(*wxBLACK_PEN);
+  SetPen({scheme.GetDefaultFgColour()});
   // Default font
   SetFont(*wxNORMAL_FONT);
-  m_fontcolour = *wxBLACK;
+  m_fontcolour = scheme.GetDefaultFgColour();
   // Default brush
-  SetBrush(*wxTRANSPARENT_BRUSH);
+  SetBrush({scheme.GetDefaultBgColour(), wxBRUSHSTYLE_TRANSPARENT});
   m_showName = false;  // Default
   m_drawOutsideMargins = false;
   m_visible = true;
@@ -304,11 +309,11 @@ IMPLEMENT_ABSTRACT_CLASS(mpInfoLayer, mpLayer)
 mpInfoLayer::mpInfoLayer() :
     mpLayer(mpLAYER_INFO)
 {
+  const auto& scheme = mpColourScheme::Instance();
   m_subtype = mpiInfo;
   m_dim = wxRect(0, 0, 1, 1);
   m_info_bmp = nullptr;
-  m_brush = *wxTRANSPARENT_BRUSH;
-  m_brush.SetColour(*wxWHITE);
+  m_brush = {scheme.GetDefaultBgColour(),wxBRUSHSTYLE_TRANSPARENT};
   m_relX = 0;
   m_relY = 0;
   m_location = mpMarginUser;
@@ -318,9 +323,10 @@ mpInfoLayer::mpInfoLayer() :
 mpInfoLayer::mpInfoLayer(const wxPoint& pos, const wxBrush &brush, mpLocation location) :
     mpInfoLayer()
 {
+  const auto& scheme = mpColourScheme::Instance();
   m_brush = brush;
   if (m_brush.GetStyle() == wxBRUSHSTYLE_TRANSPARENT)
-    m_brush.SetColour(*wxWHITE);
+    m_brush.SetColour(scheme.GetDefaultBgColour());
   m_location = location;
   m_relX = pos.x / 100.0;
   m_relY = pos.y / 100.0;
@@ -480,17 +486,17 @@ wxIMPLEMENT_DYNAMIC_CLASS(mpInfoCoords, mpInfoLayer);
 mpInfoCoords::mpInfoCoords() :
     mpInfoLayer()
 {
+  const auto& scheme = mpColourScheme::Instance();
   m_show = false;
   m_subtype = mpiCoords;
   m_labelType = mpLabel_AUTO;
   m_timeConv = 0;
   m_mouseX = m_mouseY = 0;
   m_location = mpMarginBottomRight;
-  const wxBrush coord(wxColour(232, 232, 232), wxBRUSHSTYLE_SOLID);
-  SetBrush(coord);
+  SetBrush(scheme.GetInfoBgColour());
   m_series_coord = false;
   // Default pen
-  SetPenSeries((wxPen const&)*wxBLACK_PEN);
+  SetPenSeries({scheme.GetDefaultFgColour()});
   m_content = _T("");
 }
 
@@ -511,7 +517,7 @@ mpInfoCoords::mpInfoCoords(wxPoint pos, const wxBrush &brush, mpLocation locatio
   m_timeConv = 0;
   m_mouseX = m_mouseY = 0;
   m_series_coord = false;
-  m_content = _T("");
+  m_content.Clear();
   if (m_location == mpMarginUser)
     m_drawOutsideMargins = true;
 }
@@ -710,8 +716,9 @@ wxIMPLEMENT_DYNAMIC_CLASS(mpInfoLegend, mpInfoLayer);
 mpInfoLegend::mpInfoLegend() :
     mpInfoLayer()
 {
+  const auto& scheme = mpColourScheme::Instance();
   m_subtype = mpiLegend;
-  SetBrush(*wxWHITE_BRUSH);
+  SetBrush({scheme.GetDefaultBgColour(), wxBRUSHSTYLE_SOLID});
   m_item_mode = mpLegendLine;
   m_item_direction = mpVertical;
   m_location = mpMarginBottomCenter;
@@ -740,6 +747,7 @@ mpInfoLegend::mpInfoLegend(wxPoint pos, const wxBrush &brush, mpLocation locatio
 void mpInfoLegend::UpdateBitmap(wxDC &dc, const mpWindow &w)
 {
   // Create a temporary bitmap to draw the legend
+  const auto& scheme = mpColourScheme::Instance();
   auto* buff_bmp = new wxBitmap(w.GetScreenX(), w.GetScreenY(), dc);
   wxMemoryDC buff_dc(&dc);
   buff_dc.SelectObject(*buff_bmp);
@@ -748,7 +756,7 @@ void mpInfoLegend::UpdateBitmap(wxDC &dc, const mpWindow &w)
   buff_dc.SetTextForeground(m_fontcolour);
 
   if (m_brush.GetStyle() == wxBRUSHSTYLE_TRANSPARENT)
-    buff_dc.SetBrush(*wxWHITE_BRUSH);
+    buff_dc.SetBrush({scheme.GetDefaultBgColour()});
   else
     buff_dc.SetBrush(m_brush);
   buff_dc.DrawRectangle(0, 0, w.GetScreenX(), w.GetScreenY());
@@ -881,7 +889,7 @@ void mpInfoLegend::UpdateBitmap(wxDC &dc, const mpWindow &w)
   // Copy new bitmap to m_legend_bmp
   if ((width != 0) && (height != 0))
   {
-    buff_dc.SetPen(*wxBLACK_PEN);
+    buff_dc.SetPen({scheme.GetDefaultFgColour()});
     buff_dc.SetBrush(*wxTRANSPARENT_BRUSH);
 
     // If necessary, truncate legend to fit in window
@@ -967,6 +975,7 @@ void mpInfoLegend::DoPlot(wxDC &dc, mpWindow &w)
 
 void mpInfoLegend::DrawContent(wxDC &dc, mpWindow &w)
 {
+  const auto& scheme = mpColourScheme::Instance();
   if (m_needs_update || IsSeriesValuesEnabled())
     UpdateBitmap(dc, w);
   else
@@ -995,7 +1004,7 @@ void mpInfoLegend::DrawContent(wxDC &dc, mpWindow &w)
     {
       // Draw a vertical line to indicate location of the shown values (where the line cross a series)
       mpRect bound = w.GetPlotBoundaries(true);
-      dc.SetPen(*wxBLACK_PEN);
+      dc.SetPen(scheme.GetDefaultFgColour());
       dc.DrawLine(w.GetMousePosition().x, bound.top, w.GetMousePosition().x, bound.bottom);
 
       // Draw a circle on the series where the vertical line cross it
@@ -1014,7 +1023,7 @@ void mpInfoLegend::DrawContent(wxDC &dc, mpWindow &w)
               wxCoord yCoord = w.y2p(valueScaled, function.GetYAxisID());
               if(yCoord >= bound.top && yCoord <= bound.bottom)
               {
-                dc.SetPen(wxPen(*wxBLACK, 1));
+                dc.SetPen(wxPen(scheme.GetDefaultFgColour(), 1));
                 dc.SetBrush(wxBrush(function.GetPen().GetColour()));
                 dc.DrawCircle(w.GetMousePosition().x, w.y2p(valueScaled, function.GetYAxisID()), 4);
               }
@@ -1029,10 +1038,10 @@ void mpInfoLegend::DrawContent(wxDC &dc, mpWindow &w)
 void mpInfoLegend::DrawDraggedSeries(wxDC& dc, const mpWindow &w) const {
   wxSize textSize = dc.GetTextExtent(m_selectedSeries->GetName());
   wxRect newRect(w.GetMousePosition().x - 5, w.GetMousePosition().y - 18, textSize.x, textSize.y);
-
-  dc.SetBrush(*wxWHITE_BRUSH);
-  dc.SetPen(*wxLIGHT_GREY_PEN);
-  dc.SetTextForeground(*wxBLACK);
+  const auto& scheme = mpColourScheme::Instance();
+  dc.SetBrush(scheme.GetDefaultBgColour());
+  dc.SetPen(scheme.GetInfoBgColour());
+  dc.SetTextForeground(scheme.GetDefaultFgColour());
   dc.DrawRectangle(newRect);
   dc.DrawText(m_selectedSeries->GetName(), newRect.x, newRect.y);
 }
@@ -2206,10 +2215,11 @@ IMPLEMENT_ABSTRACT_CLASS(mpBarChart, mpChart)
 mpBarChart::mpBarChart(const wxString &name, double width) :
     mpChart(name)
 {
+  const auto& scheme = mpColourScheme::Instance();
   // already set in base class mpChart's ctor: m_type = mpLAYER_CHART;
   m_subtype = mpcBarChart;
   m_width = width;
-  SetBarColour(wxColour(0, 0, 255));
+  SetBarColour(scheme.GetIndexColour(0));
   SetBarLabelPosition(mpBAR_NONE);
 }
 
@@ -2235,7 +2245,7 @@ void mpBarChart::DoPlot(wxDC &dc, mpWindow &w)
       dc.DrawRectangle(rect_x_tl, rect_y_tl, rect_width, rect_height);
       if (drawLabels)
       {
-        wxString currentLabel = wxConvUTF8.cMB2WX(labels[binIndex].c_str());
+        wxString currentLabel = wxString::FromUTF8(labels[binIndex]);
         dc.GetTextExtent(currentLabel, &labelW, &labelH);
         switch (m_labelPos)
         {
@@ -2323,15 +2333,17 @@ IMPLEMENT_ABSTRACT_CLASS(mpPieChart, mpChart)
 mpPieChart::mpPieChart(const wxString &name, double radius) :
     mpChart(name)
 {
+  const auto& scheme = mpColourScheme::Instance();
   // already set in base class mpChart's ctor: m_type = mpLAYER_CHART;
   m_subtype = mpcBarChart;
   m_radius = radius;
-  wxBrush brush(wxColour(125, 200, 255), wxBRUSHSTYLE_SOLID);
+  wxBrush brush(scheme.GetBarBgColour(), wxBRUSHSTYLE_SOLID);
   SetBrush(brush);
 }
 
 void mpPieChart::DoPlot(wxDC &dc, mpWindow &w)
 {
+  const auto& scheme = mpColourScheme::Instance();
   int labelW = 0, labelH = 0;
   bool drawLabels = (labels.size() == values.size());
   const double scale = w.GetScaleY(m_yAxisID) / w.GetScaleX();
@@ -2362,12 +2374,21 @@ void mpPieChart::DoPlot(wxDC &dc, mpWindow &w)
       x2 = static_cast<wxCoord>(
           round(w.x2p(m_radius * cos(anglepie) + m_center.x) * scale + offset));
       y2 = w.y2p(m_radius * sin(anglepie) + m_center.y, m_yAxisID);
-      wxBrush brush(GetColour(static_cast<unsigned int>(binIndex)), wxBRUSHSTYLE_SOLID);
+      wxColour pie_colour = scheme.GetIndexColour(binIndex);
+      if (binIndex < colours.size()) {
+        pie_colour = colours[binIndex];
+      }
+
+      wxBrush brush( pie_colour, wxBRUSHSTYLE_SOLID);
       dc.SetBrush(brush);
       dc.DrawArc(x1, y1, x2, y2, xc, yc);
       if (drawLabels)
       {
-        wxString currentLabel = wxConvUTF8.cMB2WX(labels[binIndex].c_str());
+        wxString currentLabel;
+        if (binIndex < labels.size()) {
+          currentLabel = wxString::FromUTF8(labels[binIndex].c_str());
+        }
+
         dc.GetTextExtent(currentLabel, &labelW, &labelH);
         labelX = static_cast<wxCoord>(round(
             w.x2p(m_radius * cos(angletxt + angle / 2.0) + m_center.x) * scale +
@@ -2416,15 +2437,16 @@ IMPLEMENT_ABSTRACT_CLASS(mpScale, mpLayer)
 mpScale::mpScale(const wxString &name, int flags, bool grids, mpLabelType labelType, mpOptional_uint axisID) :
     mpLayer(mpLAYER_AXIS)
 {
+  const auto& scheme = mpColourScheme::Instance();
   m_subtype = mpsScaleNone;
   if (axisID)
     m_axisID = static_cast<int>(*axisID);
   else
     m_axisID = -1;
   SetName(name);
-  SetFont((wxFont const&)*wxSMALL_FONT);
-  SetPen((wxPen const&)*wxGREY_PEN);
-  m_gridpen = wxPen(*wxLIGHT_GREY, 1, wxPENSTYLE_DOT);
+  SetFont(*wxSMALL_FONT);
+  SetPen(scheme.GetAxisColour());
+  m_gridpen = wxPen(scheme.GetGridColour(), 1, wxPENSTYLE_DOT);
   m_flags = flags;
   m_ticks = true;
   m_grids = grids;
@@ -3053,6 +3075,7 @@ wxIMPLEMENT_DYNAMIC_CLASS(mpWindow, wxWindow);
 mpWindow::mpWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size, long flag) :
     wxWindow(parent, id, pos, size, flag, _T("Mathplot"))
 {
+  const auto& scheme = mpColourScheme::Instance();
   // Fill i18n string
   FillI18NString();
 
@@ -3118,9 +3141,9 @@ mpWindow::mpWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wx
 #endif
 
   m_layers.clear();
-  wxWindowBase::SetBackgroundColour(*wxWHITE);
-  m_bgColour = *wxWHITE;
-  m_fgColour = *wxBLACK;
+  wxWindowBase::SetBackgroundColour(scheme.GetDefaultBgColour());
+  m_bgColour = scheme.GetDefaultBgColour();
+  m_fgColour = scheme.GetDefaultFgColour();
   m_drawBox = true;
 
   wxWindowBase::SetSizeHints(128, 128);
@@ -3143,7 +3166,7 @@ mpWindow::~mpWindow()
 void mpWindow::BindEvents()
 {
   // General events
-  Bind(wxEVT_PAINT, &mpWindow::OnPaint, this);
+  Bind(wxEVT_PAINT, &mpWindow::OnMpPaint, this);
   Bind(wxEVT_SIZE, &mpWindow::OnSize, this);
   Bind(wxEVT_SCROLLWIN_THUMBTRACK, &mpWindow::OnScrollThumbTrack, this);
   Bind(wxEVT_SCROLLWIN_PAGEUP, &mpWindow::OnScrollPageUp, this);
@@ -4435,7 +4458,7 @@ void mpWindow::DelAllYAxisAfterID(mpDeleteAction alsoDeleteObject, int yAxisID, 
   RefreshConfigWindow(mpLAYER_AXIS);
 }
 
-void mpWindow::OnPaint(wxPaintEvent &WXUNUSED(event))
+void mpWindow::OnMpPaint(wxPaintEvent &)
 {
   if (m_enableBufferedPaintDC)
   {
@@ -4451,6 +4474,7 @@ void mpWindow::OnPaint(wxPaintEvent &WXUNUSED(event))
 
 void mpWindow::Paint(wxDC& dc)
 {
+  const auto& scheme = mpColourScheme::Instance();
   int h, w;
   GetClientSize(&w, &h);
   if (w == 0 || h == 0)
@@ -4484,10 +4508,10 @@ void mpWindow::Paint(wxDC& dc)
     // Clean the screen
     m_buff_dc.Clear();
     if (m_drawBox)
-      m_buff_dc.SetPen(*wxBLACK);
+      m_buff_dc.SetPen(scheme.GetDefaultFgColour());
     else
       m_buff_dc.SetPen(*wxTRANSPARENT_PEN);
-    m_buff_dc.SetBrush(*wxWHITE_BRUSH);
+    m_buff_dc.SetBrush(scheme.GetDefaultBgColour());
     m_buff_dc.DrawRectangle(0, 0, m_scrX, m_scrY);
 
     // Draw background plot area
@@ -4692,13 +4716,14 @@ bool mpWindow::UpdateBBox()
 }
 
 void mpWindow::DrawBoxZoom(wxDC& dc) const {
+  const auto& scheme = mpColourScheme::Instance();
   wxRect newRect(m_mouseLClick, m_mousePos);
 
   // Normalize
   if (newRect.width < 0) { newRect.x += newRect.width; newRect.width = abs(newRect.width); }
   if (newRect.height < 0) { newRect.y += newRect.height; newRect.height = abs(newRect.height); }
 
-  wxPen pen(*wxBLACK, 1, wxPENSTYLE_DOT);
+  wxPen pen(scheme.GetDefaultFgColour(), 1, wxPENSTYLE_DOT);
   dc.SetPen(pen);
   dc.SetBrush(*wxTRANSPARENT_BRUSH);
   dc.DrawRectangle(newRect);
@@ -5327,6 +5352,7 @@ int mpWindow::GetRightYAxesWidth(mpOptional_int yAxisID)
 
 wxBitmap* mpWindow::BitmapScreenshot(wxSize imageSize, bool fit)
 {
+  const auto& scheme = mpColourScheme::Instance();
   int sizeX, sizeY;
   int bk_scrX = m_scrX;
   int bk_scrY = m_scrY;
@@ -5352,10 +5378,10 @@ wxBitmap* mpWindow::BitmapScreenshot(wxSize imageSize, bool fit)
 
   // Clean the screen
   if (m_drawBox)
-    m_Screenshot_dc.SetPen(*wxBLACK);
+    m_Screenshot_dc.SetPen(scheme.GetDefaultFgColour());
   else
     m_Screenshot_dc.SetPen(*wxTRANSPARENT_PEN);
-  m_Screenshot_dc.SetBrush(*wxWHITE_BRUSH);
+  m_Screenshot_dc.SetBrush(scheme.GetDefaultBgColour());
   m_Screenshot_dc.DrawRectangle(0, 0, m_scrX, m_scrY);
 
   m_Screenshot_dc.SetBrush(m_bgColour);
@@ -5533,7 +5559,7 @@ MathPlotConfigDialog* mpWindow::GetConfigWindow(bool Create)
 }
 #endif // MP_ENABLE_CONFIG
 
-void mpWindow::RefreshConfigWindow(mpLayerType layerType, int param, bool show)
+void mpWindow::RefreshConfigWindow(mpLayerType layerType, int param, bool show) // NOLINT(*-convert-member-functions-to-static)
 {
 #if defined(MP_ENABLE_CONFIG) || defined(ENABLE_MP_CONFIG)
   if (m_configWindow == NULL)
@@ -5701,10 +5727,11 @@ wxIMPLEMENT_DYNAMIC_CLASS(mpTitle, mpText);
 
 mpTitle::mpTitle()
 {
+  const auto& scheme = mpColourScheme::Instance();
   m_subtype = mptTitle;
   m_location = mpMarginTopCenter;
-  SetPen(*wxWHITE_PEN);
-  SetBrush(*wxWHITE_BRUSH);
+  SetPen(scheme.GetDefaultBgColour());
+  SetBrush(scheme.GetDefaultBgColour());
 }
 
 //-----------------------------------------------------------------------------
@@ -6262,7 +6289,8 @@ void mpBitmapLayer::DoPlot(wxDC &dc, mpWindow &w)
 //-----------------------------------------------------------------------------
 
 void mpMagnet::DrawCross(wxDC &dc, const mpWindow &w) const {
-  dc.SetPen(*wxBLACK_PEN);
+  const auto& scheme = mpColourScheme::Instance();
+  dc.SetPen(scheme.GetDefaultFgColour());
   dc.DrawLine(w.GetMousePosition().x, m_domain.GetTop(), w.GetMousePosition().x, m_domain.GetBottom());
   dc.DrawLine(m_domain.GetLeft(), w.GetMousePosition().y, m_domain.GetRight(), w.GetMousePosition().y);
 }

@@ -7,15 +7,12 @@
  * License:
  **************************************************************/
 
-#ifndef MATHPLOTDEMOAPP_H
-#define MATHPLOTDEMOAPP_H
+#pragma once
 
 #include <wx/app.h>
 
 class MathPlotDemoApp : public wxApp
 {
-    public:
-        virtual bool OnInit();
+public:
+  bool OnInit() override;
 };
-
-#endif // MATHPLOTDEMOAPP_H
