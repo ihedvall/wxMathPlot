@@ -22,6 +22,8 @@ enum class mp_Colour_Scheme : int {
  SystemMode = 0,
  LightMode,
  DarkMode,
+ NoirMode,
+ CaviarMode,
  CustomMode
 };
 
@@ -36,7 +38,7 @@ public:
   return m_name;
  };
 
- void SetColourScheme(mp_Colour_Scheme scheme);
+ static void SetColourScheme(mp_Colour_Scheme scheme);
  [[nodiscard]] mp_Colour_Scheme GetColourScheme() const {
   return m_colour_scheme;
  }
@@ -85,6 +87,8 @@ private:
  static void SetLightMode();
  static void SetDarkMode();
  static void SetSystemMode();
+ static void SetNoirMode();
+ static void SetCaviarMode();
 };
 
 #if defined(MP_ENABLE_NAMESPACE) || defined(ENABLE_MP_NAMESPACE)

@@ -21,7 +21,7 @@ bool MathPlotDemoApp::OnInit()
   
 #if wxCHECK_VERSION(3,3,3)
   SetAppearance(Appearance::System);
-  mpColourScheme::Instance().SetColourScheme(mp_Colour_Scheme::SystemMode);
+  mpColourScheme::SetColourScheme(mp_Colour_Scheme::SystemMode);
 #endif
   bool wxsOK = true;
   wxInitAllImageHandlers();

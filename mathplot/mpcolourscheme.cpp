@@ -74,6 +74,47 @@ void mpColourScheme::SetSystemMode() {
   };
 }
 
+void mpColourScheme::SetNoirMode() {
+  auto& scheme = mpColourScheme::Instance();
+  scheme.m_name = "Noir Mode";
+  scheme.m_colour_scheme = mp_Colour_Scheme::NoirMode;
+  scheme.m_default_fg_colour = *wxWHITE;;
+  scheme.m_default_bg_colour = wxColour(77,77,77);
+  scheme.m_info_bg_colour = *wxStockGDI::GetColour(wxStockGDI::COLOUR_GREY);
+  scheme.m_axis_colour = wxColour(179,179,179);
+  scheme.m_grid_colour = wxColour(179,179,179);
+  scheme.m_bar_bg_colour = wxColour(179,179,179);
+
+  scheme.m_line_colours = {
+    *wxYELLOW, *wxRED, *wxGREEN,
+    wxColour(255,128,0), wxColour(255,0,128),
+    *wxWHITE
+   };
+  scheme.m_colour_names = {
+    "Yellow", "Red", "Green", "Orange", "Pink", "White"
+  };
+}
+
+void mpColourScheme::SetCaviarMode() {
+  auto& scheme = mpColourScheme::Instance();
+  scheme.m_name = "Caviar Mode";
+  scheme.m_colour_scheme = mp_Colour_Scheme::NoirMode;
+  scheme.m_default_fg_colour = wxColour(204,204,255);;
+  scheme.m_default_bg_colour = wxColour(61,61,102);
+  scheme.m_info_bg_colour = wxColour(70,70,99);
+  scheme.m_axis_colour = wxColour(179,179,179);
+  scheme.m_grid_colour = wxColour(179,179,179);
+  scheme.m_bar_bg_colour = wxColour(179,179,179);
+
+  scheme.m_line_colours = {
+    *wxYELLOW, *wxRED, *wxGREEN,
+    wxColour(255,128,0), wxColour(255,0,128),
+    *wxWHITE
+   };
+  scheme.m_colour_names = {
+    "Yellow", "Red", "Green", "Orange", "Pink", "White"
+  };
+}
 void mpColourScheme::SetColourScheme(mp_Colour_Scheme scheme) {
   switch (scheme) {
   case mp_Colour_Scheme::SystemMode:
@@ -86,6 +127,14 @@ void mpColourScheme::SetColourScheme(mp_Colour_Scheme scheme) {
 
   case mp_Colour_Scheme::DarkMode:
     SetDarkMode();
+    break;
+
+  case mp_Colour_Scheme::NoirMode:
+    SetNoirMode();
+    break;
+
+  case mp_Colour_Scheme::CaviarMode:
+    SetCaviarMode();
     break;
 
   default:
