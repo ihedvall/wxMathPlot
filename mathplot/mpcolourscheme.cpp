@@ -4,64 +4,76 @@
  */
 
 #include "mpcolourscheme.h"
+
 #include <wx/settings.h>
 
-mpColourScheme mpColourScheme::m_instance;
+#if defined(MP_ENABLE_NAMESPACE) || defined(ENABLE_MP_NAMESPACE)
+  namespace MathPlot {
+#endif // MP_ENABLE_NAMESPACE
+
+mpColourScheme& mpColourScheme::Instance() {
+  static mpColourScheme instance;
+  return instance; 
+}
 
 void mpColourScheme::SetLightMode() {
-  m_name = "Light Mode";
-  m_colour_scheme = mp_Colour_Scheme::LightMode;
-  m_default_fg_colour = *wxBLACK;
-  m_default_bg_colour = *wxWHITE;
-  m_info_bg_colour = *wxLIGHT_GREY;
-  m_axis_colour = *wxStockGDI::GetColour(wxStockGDI::COLOUR_GREY);
-  m_grid_colour = *wxLIGHT_GREY;
-  m_bar_bg_colour = *wxLIGHT_GREY;
+  auto& scheme = mpColourScheme::Instance();
+  scheme.m_name = "Light Mode";
+  scheme.m_colour_scheme = mp_Colour_Scheme::LightMode;
+  scheme.m_default_fg_colour = *wxBLACK;
+  scheme.m_default_bg_colour = *wxWHITE;
+  scheme.m_info_bg_colour = *wxLIGHT_GREY;
+  scheme.m_axis_colour = *wxStockGDI::GetColour(wxStockGDI::COLOUR_GREY);
+  scheme.m_grid_colour = *wxLIGHT_GREY;
+  scheme.m_bar_bg_colour = *wxLIGHT_GREY;
 
-  m_line_colours = {
+  scheme.m_line_colours = {
     *wxGREEN, *wxRED, *wxBLUE, *wxBLACK, *wxYELLOW, *wxCYAN
    };
-  m_colour_names = {
+  scheme.m_colour_names = {
     "Green", "Red", "Blue", "Black", "Yellow", "Cyan"
   };
 }
 
 void mpColourScheme::SetDarkMode() {
-  m_name = "Dark Mode";
-  m_colour_scheme = mp_Colour_Scheme::DarkMode;
-  m_default_fg_colour = *wxWHITE;
-  m_default_bg_colour = *wxBLACK;
-  m_info_bg_colour = *wxStockGDI::GetColour(wxStockGDI::COLOUR_GREY);
-  m_axis_colour = *wxStockGDI::GetColour(wxStockGDI::COLOUR_LIGHTGREY);
-  m_grid_colour = *wxStockGDI::GetColour(wxStockGDI::COLOUR_GREY);
-  m_bar_bg_colour = *wxStockGDI::GetColour(wxStockGDI::COLOUR_GREY);
+  auto& scheme = mpColourScheme::Instance();
+  scheme.m_name = "Dark Mode";
+  scheme.m_colour_scheme = mp_Colour_Scheme::DarkMode;
+  scheme.m_default_fg_colour = *wxWHITE;
+  scheme.m_default_bg_colour = *wxBLACK;
+  scheme.m_info_bg_colour = *wxStockGDI::GetColour(wxStockGDI::COLOUR_GREY);
+  scheme.m_axis_colour = *wxStockGDI::GetColour(wxStockGDI::COLOUR_LIGHTGREY);
+  scheme.m_grid_colour = *wxStockGDI::GetColour(wxStockGDI::COLOUR_GREY);
+  scheme.m_bar_bg_colour = *wxStockGDI::GetColour(wxStockGDI::COLOUR_GREY);
 
-  m_line_colours = {
+  scheme.m_line_colours = {
     *wxGREEN, *wxRED, *wxBLUE, *wxWHITE, *wxYELLOW, *wxCYAN
    };
-  m_colour_names = {
+  scheme.m_colour_names = {
     "Green", "Red", "Blue", "White", "Yellow", "Cyan"
   };
 }
 
 void mpColourScheme::SetSystemMode() {
-  m_name = "System Mode";
-  m_colour_scheme = mp_Colour_Scheme::SystemMode;
-  m_default_fg_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
-  m_default_bg_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW);
-  m_info_bg_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_DESKTOP);;
-  m_axis_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT );;
-  m_grid_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWFRAME);;
-  m_bar_bg_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWFRAME);;
+  auto& scheme = mpColourScheme::Instance();
+  scheme.m_name = "System Mode";
+  scheme.m_colour_scheme = mp_Colour_Scheme::SystemMode;
+  scheme.m_default_fg_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
+  scheme.m_default_bg_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW);
+  scheme.m_info_bg_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_DESKTOP);
+  scheme.m_axis_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT );
+  scheme.m_grid_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWFRAME);
+  scheme.m_bar_bg_colour = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWFRAME);
 
-  m_line_colours = {
+  scheme.m_line_colours = {
     *wxGREEN, *wxRED, *wxBLUE,
     wxSystemSettings::GetColour(wxSYS_COLOUR_GRAYTEXT ), *wxYELLOW, *wxCYAN
    };
-  m_colour_names = {
+  scheme.m_colour_names = {
     "Green", "Red", "Blue", "Gray", "Yellow", "Cyan"
   };
 }
+
 void mpColourScheme::SetColourScheme(mp_Colour_Scheme scheme) {
   switch (scheme) {
   case mp_Colour_Scheme::SystemMode:
@@ -103,3 +115,7 @@ wxPen mpColourScheme::GetLinePen(size_t line_index) const {
   wxPen pen(m_line_colours[line_colour], line_width, line_styles[style_index]);
   return pen;
 }
+
+#if defined(MP_ENABLE_NAMESPACE) || defined(ENABLE_MP_NAMESPACE)
+  }// namespace MathPlot
+#endif // MP_ENABLE_NAMESPACE

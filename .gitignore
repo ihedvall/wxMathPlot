@@ -41,4 +41,6 @@ mathplot/mathplot_refactorTypes.h
 # JetBrains IDE
 .idea/
 
-/wxmathplot-cppcheck-build-dir/
+wxmathplot-cppcheck-build-dir/
+vcpkg_installed/
+

@@ -109,9 +109,11 @@ MathPlotDemoFrame::MathPlotDemoFrame(wxWindow* parent, wxWindowID id)
 
     Create(parent, wxID_ANY, _("MathPlot Demo"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(800,450));
+
     AuiManager1 = new wxAuiManager(this, wxAUI_MGR_ALLOW_ACTIVE_PANE|wxAUI_MGR_DEFAULT);
     pDemo = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     pDemo->SetMinSize(wxSize(140,-1));
+
     auto *BoxSizer2 = new wxBoxSizer(wxVERTICAL);
     bDraw = new wxButton(pDemo, wxID_ANY, _("Draw sinus"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
     BoxSizer2->Add(bDraw, 0, wxALL|wxEXPAND, 10);
@@ -156,6 +158,7 @@ MathPlotDemoFrame::MathPlotDemoFrame(wxWindow* parent, wxWindowID id)
         Menu1, idMenuPreview, _("Print Preview"), wxEmptyString, wxITEM_NORMAL);
     miPreview->SetBitmap(wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_FULL_SCREEN")),wxART_MENU));
     Menu1->Append(miPreview);
+
     miPrint = new wxMenuItem(Menu1, idMenuPrint, _("Print"), wxEmptyString, wxITEM_NORMAL);
     miPrint->SetBitmap(wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_PRINT")),wxART_MENU));
     Menu1->Append(miPrint);
@@ -206,6 +209,7 @@ MathPlotDemoFrame::~MathPlotDemoFrame()
 
 void MathPlotDemoFrame::InitializePlot()
 {
+  const auto& scheme = mpColourScheme::Instance();
 #if defined(MP_ENABLE_CONFIG) || defined(ENABLE_MP_CONFIG)
   // Create config file
   mPlot->GetConfigWindow(true)->CreateSettingsFile("config.ini");
@@ -217,12 +221,13 @@ void MathPlotDemoFrame::InitializePlot()
   bottomAxis = new mpScaleX(wxT("X"), mpALIGN_CENTERX, true, mpLabel_AUTO);
   bottomAxis->SetCanDelete(false); // We can not delete this axis in IHM
   bottomAxis->SetLabelFormat("%g");
+
   leftAxis = new mpScaleY(wxT("Y"), mpALIGN_CENTERY, true);
   leftAxis->SetCanDelete(false); // We can not delete this axis in IHM
   leftAxis->SetLabelFormat("%g");
 
   wxFont graphFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-  wxPen axispen(*wxRED, 2, wxPENSTYLE_SOLID);
+  wxPen axispen(scheme.GetAxisColour(), 1, wxPENSTYLE_SOLID);
   bottomAxis->SetFont(graphFont);
   leftAxis->SetFont(graphFont);
   bottomAxis->SetPen(axispen);
@@ -232,15 +237,15 @@ void MathPlotDemoFrame::InitializePlot()
   mPlot->AddLayer(leftAxis, false, false);
 
   // Add a title layer
-  mpTitle* plotTitle;
-  mPlot->AddLayer(plotTitle = new mpTitle(_("Demo MathPlot")), false, false);
+  auto* plotTitle = new mpTitle(_("Demo MathPlot"));
+  mPlot->AddLayer(plotTitle, false, false);
 
   wxFont titleFont(12, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_BOLD);
   plotTitle->SetFont(titleFont);
 
   // Add a coordinate info layer
-  mpInfoCoords* info;
-  mPlot->AddLayer(info = new mpInfoCoords(), false, false);
+  auto* info = new mpInfoCoords();
+  mPlot->AddLayer(info, false, false);
   info->SetVisible(true);
 
   // Add a legend info layer
@@ -260,6 +265,7 @@ void MathPlotDemoFrame::InitializePlot()
 
 void MathPlotDemoFrame::CleanPlot()
 {
+  const auto& scheme = mpColourScheme::Instance();
   // Stop timer for moving object
   Timer.Stop();
   // Remove all the plot (all functions mpFX, mpFY, mpFXY)
@@ -270,7 +276,7 @@ void MathPlotDemoFrame::CleanPlot()
   bottomAxis->SetAlign(mpALIGN_CENTERX);
   bottomAxis->SetLogAxis(false);
   bottomAxis->SetAuto(true);
-  bottomAxis->SetPen(wxPen(*wxRED, 2, wxPENSTYLE_SOLID));
+  bottomAxis->SetPen(wxPen(scheme.GetAxisColour(), 1, wxPENSTYLE_SOLID));
   leftAxis->SetAlign(mpALIGN_CENTERY);
   leftAxis->SetLogAxis(false);
   leftAxis->SetAuto(true);
@@ -568,10 +574,11 @@ void MathPlotDemoFrame::OnmiPrintSelected(wxCommandEvent &WXUNUSED(event))
 
 void MathPlotDemoFrame::OnbMultiYAxisClick(wxCommandEvent &WXUNUSED(event))
 {
+  const auto& scheme = mpColourScheme::Instance();
   CleanPlot();
 
   wxFont graphFont(11, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-  wxPen axispen(*wxBLACK, 1, wxPENSTYLE_SOLID);
+  wxPen axispen(scheme.GetAxisColour(), 1, wxPENSTYLE_SOLID);
 
   // Use same color palette as Matlab
   const std::vector<wxColour> plotColors =

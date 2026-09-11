@@ -27,6 +27,9 @@
     <ClCompile Include="..\wxFormBuilder\MathPlotConfigBuilder.cpp">
       <Filter>MathPlot\MathPlot_wxFormBuilder_ConfigDialog</Filter>
     </ClCompile>
+    <ClCompile Include="..\mathplot\mpcolourscheme.cpp">
+      <Filter>MathPlot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\mathplot\mathplot.h">
@@ -43,6 +46,9 @@
     </ClInclude>
     <ClInclude Include="..\wxFormBuilder\MathPlotConfigBuilder.h">
       <Filter>MathPlot\MathPlot_wxFormBuilder_ConfigDialog</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mathplot\mpcolourscheme.h">
+      <Filter>MathPlot</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

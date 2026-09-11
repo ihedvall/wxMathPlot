@@ -3144,7 +3144,7 @@ mpWindow::mpWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wx
   wxWindowBase::SetBackgroundColour(scheme.GetDefaultBgColour());
   m_bgColour = scheme.GetDefaultBgColour();
   m_fgColour = scheme.GetDefaultFgColour();
-  m_drawBox = true;
+  m_drawBox = false;
 
   wxWindowBase::SetSizeHints(128, 128);
 

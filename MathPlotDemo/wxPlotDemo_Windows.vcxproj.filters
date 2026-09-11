@@ -21,6 +21,9 @@
     <ClCompile Include="..\mathplot\mathplot.cpp">
       <Filter>MathPlot</Filter>
     </ClCompile>
+    <ClCompile Include="..\mathplot\mpcolourscheme.cpp">
+      <Filter>MathPlot</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\mathplot\mathplot.h">
@@ -33,6 +36,9 @@
       <Filter>MathPlot</Filter>
     </ClInclude>
     <ClInclude Include="..\mathplot\Images\Screenshot.h">
+      <Filter>MathPlot</Filter>
+    </ClInclude>
+    <ClInclude Include="..\mathplot\mpcolourscheme.h">
       <Filter>MathPlot</Filter>
     </ClInclude>
   </ItemGroup>

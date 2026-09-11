@@ -547,7 +547,7 @@ void MathPlotConfigDialog::Initialize(mpConfigPageId id)
   if (id != mpcpiNone)
     nbConfig->SetSelection(id);
 
-  CurrentChoice = NULL;
+  CurrentChoice = nullptr;
   switch (nbConfig->GetSelection())
   {
     case mpcpiAxis:
@@ -560,7 +560,7 @@ void MathPlotConfigDialog::Initialize(mpConfigPageId id)
       CurrentChoice = ChoiceLines;
       break;
     default:
-      ;
+      break;
   }
 }
 

@@ -214,10 +214,15 @@ class WXDLLIMPEXP_MATHPLOT mpMovableObject;
 class WXDLLIMPEXP_MATHPLOT mpCovarianceEllipse;
 class WXDLLIMPEXP_MATHPLOT mpPolygon;
 class WXDLLIMPEXP_MATHPLOT mpBitmapLayer;
+class WXDLLIMPEXP_MATHPLOT mpColourScheme;
+
+
 
 #if defined(MP_ENABLE_CONFIG) || defined(ENABLE_MP_CONFIG)
 class MathPlotConfigDialog;
 #endif // MP_ENABLE_CONFIG
+
+
 
 /// A rectangle structure in several (integer) flavors
 struct mpRect
@@ -3301,15 +3306,8 @@ typedef std::function<void(void *Sender, wxMouseEvent &event, bool &cancel)> mpO
 class mpMagnet
 {
   public:
-    mpMagnet()
-    {
-      m_enable = false;
-      m_show = false;
-    }
-    ~mpMagnet()
-    {
-      ;
-    }
+    mpMagnet() = default;
+    ~mpMagnet() = default;
 
     /// Update the drawable magnet area from a wxRect.
     void UpdateBox(const wxRect &plotArea)
@@ -3349,8 +3347,8 @@ class mpMagnet
     }
 
   private:
-    bool m_enable;             //!< Indicats if magnet is enabled
-    bool m_show;               //!< Indicates if magnet shall be shown in plot
+    bool m_enable = false;             //!< Indicats if magnet is enabled
+    bool m_show = false;               //!< Indicates if magnet shall be shown in plot
     wxRect m_domain;           //!< The area delimited by axis (m_margin.left, m_margin.top, m_plotWidth, m_plotHeight)
 };
 
@@ -4651,7 +4649,7 @@ class WXDLLIMPEXP_MATHPLOT mpWindow: public wxWindow
     wxColour m_bgColour;    //!< Background Colour
     wxColour m_fgColour;    //!< Foreground Colour
     wxColour m_axColour;    //!< Axes Colour
-    bool m_drawBox = false;         //!< Draw box of the plot bound. Default true
+    bool m_drawBox = false;         //!< Draw box of the plot bound. Default false
 
     int m_scrX = 0;             //!< Current view's X dimension in DC units, including all scales, margins
     int m_scrY = 0;             //!< Current view's Y dimension

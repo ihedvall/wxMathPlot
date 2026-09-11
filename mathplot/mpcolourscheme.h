@@ -14,6 +14,9 @@
 #include <wx/brush.h>
 #include <wx/pen.h>
 
+#if defined(MP_ENABLE_NAMESPACE) || defined(ENABLE_MP_NAMESPACE)
+  namespace MathPlot {
+#endif // MP_ENABLE_NAMESPACE
 
 enum class mp_Colour_Scheme : int {
  SystemMode = 0,
@@ -25,7 +28,8 @@ enum class mp_Colour_Scheme : int {
 class mpColourScheme {
 public:
 
- static mpColourScheme& Instance() { return m_instance; }
+ static mpColourScheme& Instance();
+
 
  void SetName(std::string name) { m_name = std::move(name); }
  [[nodiscard]] const std::string& GetName() const {
@@ -77,10 +81,12 @@ protected:
 };
 
 private:
- static mpColourScheme m_instance;
- void SetLightMode();
- void SetDarkMode();
- void SetSystemMode();
+
+ static void SetLightMode();
+ static void SetDarkMode();
+ static void SetSystemMode();
 };
 
-
+#if defined(MP_ENABLE_NAMESPACE) || defined(ENABLE_MP_NAMESPACE)
+  }// namespace MathPlot
+#endif // MP_ENABLE_NAMESPACE

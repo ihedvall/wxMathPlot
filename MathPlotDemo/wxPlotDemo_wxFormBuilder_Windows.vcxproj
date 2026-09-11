@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\mathplot\mathplot.cpp" />
+    <ClCompile Include="..\mathplot\mpcolourscheme.cpp" />
     <ClCompile Include="..\wxFormBuilder\MathPlotConfig.cpp" />
     <ClCompile Include="..\wxFormBuilder\MathPlotConfigBuilder.cpp" />
     <ClCompile Include="MathPlotDemoApp.cpp" />
@@ -28,6 +29,7 @@
   <ItemGroup>
     <ClInclude Include="..\mathplot\Images\Screenshot.h" />
     <ClInclude Include="..\mathplot\mathplot.h" />
+    <ClInclude Include="..\mathplot\mpcolourscheme.h" />
     <ClInclude Include="..\wxFormBuilder\MathPlotConfig.h" />
     <ClInclude Include="..\wxFormBuilder\MathPlotConfigBuilder.h" />
     <ClInclude Include="Sample.h" />
@@ -90,6 +92,17 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>$(ProjectName)_Debug</TargetName>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgTriplet>x64-windows</VcpkgTriplet>
+    <VcpkgInstalledDir>
+    </VcpkgInstalledDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgTriplet>x64-windows</VcpkgTriplet>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -149,7 +162,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(wxWidgets)/lib/vc_x64_lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wxmsw32ud_core.lib;wxbase32ud.lib;wxmsw32ud_aui.lib;wxpngd.lib;wxjpegd.lib;wxtiffd.lib;wxzlibd.lib;wxregexud.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;version.lib;wsock32.lib;wininet.lib;%(AdditionalDependencies);$(CoreLibraryDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;version.lib;wsock32.lib;wininet.lib;%(AdditionalDependencies);$(CoreLibraryDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
@@ -173,7 +186,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(wxWidgets)/lib/vc_x64_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wxmsw32u_core.lib;wxbase32u.lib;wxmsw32u_aui.lib;wxpng.lib;wxjpeg.lib;wxtiff.lib;wxzlib.lib;wxregexu.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;version.lib;wsock32.lib;wininet.lib;%(AdditionalDependencies);$(CoreLibraryDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;version.lib;wsock32.lib;wininet.lib;%(AdditionalDependencies);$(CoreLibraryDependencies)</AdditionalDependencies>
     </Link>
     <Manifest>
       <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>

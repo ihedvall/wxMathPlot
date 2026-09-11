@@ -18,8 +18,8 @@ IMPLEMENT_APP(MathPlotDemoApp); // NOLINT(*-pro-type-static-cast-downcast)
 bool MathPlotDemoApp::OnInit()
 {
   std::locale::global(std::locale(""));
-
-#if wxCHECK_VERSION(3,3,0)
+  
+#if wxCHECK_VERSION(3,3,3)
   SetAppearance(Appearance::System);
   mpColourScheme::Instance().SetColourScheme(mp_Colour_Scheme::SystemMode);
 #endif
