@@ -98,7 +98,7 @@ void mpColourScheme::SetNoirMode() {
 void mpColourScheme::SetCaviarMode() {
   auto& scheme = mpColourScheme::Instance();
   scheme.m_name = "Caviar Mode";
-  scheme.m_colour_scheme = mp_Colour_Scheme::NoirMode;
+  scheme.m_colour_scheme = mp_Colour_Scheme::CaviarMode;
   scheme.m_default_fg_colour = wxColour(204,204,255);;
   scheme.m_default_bg_colour = wxColour(61,61,102);
   scheme.m_info_bg_colour = wxColour(70,70,99);

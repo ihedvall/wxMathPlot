@@ -22,7 +22,11 @@
 //*)
 
 #include <wx/tipwin.h>
+
+#include "mpinfoxtracker.h"
+
 #include "Sample.h"
+
 namespace {
 //helper functions
 enum wxBuildInfoFormat { short_f [[maybe_unused]], long_f };
@@ -249,7 +253,7 @@ void MathPlotDemoFrame::InitializePlot()
   info->SetVisible(true);
 
   // Add a legend info layer
-  auto* legend = new mpInfoLegend();
+  auto* legend = new mpInfoXTracker();
   legend->EnableSeriesValues(true);
   mPlot->AddLayer(legend, false);
   legend->SetItemDirection(mpHorizontal); // Note: Comment out this line to test mpVertical

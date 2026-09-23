@@ -1036,6 +1036,10 @@ void mpInfoLegend::DrawContent(wxDC &dc, mpWindow &w)
 }
 
 void mpInfoLegend::DrawDraggedSeries(wxDC& dc, const mpWindow &w) const {
+  if (m_selectedSeries == nullptr) {
+    return;
+  }
+
   wxSize textSize = dc.GetTextExtent(m_selectedSeries->GetName());
   wxRect newRect(w.GetMousePosition().x - 5, w.GetMousePosition().y - 18, textSize.x, textSize.y);
   const auto& scheme = mpColourScheme::Instance();
@@ -2804,7 +2808,7 @@ void mpScaleX::DoPlot(wxDC &dc, mpWindow &w)
   wxString s;
 
   // Draw grid, ticks and compute max label length
-  for (int i = 0; i < static_cast<int>(round((end - n0) / step)); i++)
+  for (int i = 0; i < static_cast<int>(round((end - n0) / step)); ++i)
   {
     const double n = n0 + i * step;
     const int p = w.x2p(n);
@@ -2997,7 +3001,7 @@ void mpScaleY::DoPlot(wxDC &dc, mpWindow &w)
   {
     const double n = n0 + i * step;
     const wxCoord p = w.y2p(n, GetAxisID());
-    if ((p > startPy) && (p < endPy))
+    if ((p >= startPy) && (p < endPy))
     {
       // Draw axis grids
       // We take care if we are over the X axis. This work because we plot in order X axis and Y axis after.
@@ -3124,7 +3128,7 @@ mpWindow::mpWindow(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wx
     {
       auto mymenu = new wxMenuItem(
           &m_popmenu, mpID_FIT + i, Popup_string[i][0], Popup_string[i][1]);
-      mymenu->SetBitmap(icon[i]);
+      // mymenu->SetBitmap(icon[i]);
       m_popmenu.Append(mymenu);
     }
     else

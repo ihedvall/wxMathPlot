@@ -24,10 +24,13 @@ if (CMAKE_TOOLCHAIN_FILE)
 endif()
 
 # wxMathPlot lib
-set(wxmathplot_src mathplot/mathplot.cpp
-		           mathplot/mpcolourscheme.cpp
-		           mathplot/mpcolourscheme.h
-		           MathPlotConfig/MathPlotConfig.cpp)
+set(wxmathplot_src
+        mathplot/mathplot.cpp
+		mathplot/mpcolourscheme.cpp
+		mathplot/mpcolourscheme.h
+        mathplot/mpinfoxtracker.cpp
+        mathplot/mpinfoxtracker.h
+		MathPlotConfig/MathPlotConfig.cpp)
 add_library(wxmathplot SHARED ${wxmathplot_src})
 target_link_libraries(wxmathplot PRIVATE ${wxWidgets_LIBRARIES} )
 

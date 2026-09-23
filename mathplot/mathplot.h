@@ -121,6 +121,7 @@ typedef std::optional<int> mpOptional_int;
 #include <algorithm>
 #include "mpcolourscheme.h"
 
+
 #if defined(MP_USER_INCLUDE)
   /// Expand a macro argument to a string literal.
   #define xstr(x) #x
@@ -1559,7 +1560,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLegend: public mpInfoLayer
      * otherwise return HitNone
      * @param mousePos The mouse position
      * @return Index of series or header hit. Return -1 if we are outside the legend */
-    int GetLegendHitRegion(wxPoint mousePos);
+    virtual int GetLegendHitRegion(wxPoint mousePos);
 
     /** When a series is being dragged, draw a rectangle with its name at the mouse cursor.
      *  Will draw directly to dc via Blit to make it responsive, and also makes sure that
@@ -1572,7 +1573,7 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLegend: public mpInfoLayer
     /** Draw the content of info legend to plot
      * @param dc the device context where to plot
      * @param w Parent mpWindow from which to obtain information */
-    void DrawContent(wxDC &dc, mpWindow &w);
+    virtual void DrawContent(wxDC &dc, mpWindow &w);
 
     /** Clear the dragged series rectangle from the plot and restores axis
      * hovering indication
