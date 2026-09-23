@@ -16,7 +16,6 @@ int mpInfoXTracker::GetLegendHitRegion(wxPoint) {
 }
 
 void mpInfoXTracker::DrawContent(wxDC &dc, mpWindow &w) {
-  const auto& scheme = mpColourScheme::Instance();
   const double mouseXValue = w.p2x(w.GetMousePosition().x);
   DrawXPosition(mouseXValue, dc, w);
   FireXEvent(mouseXValue);

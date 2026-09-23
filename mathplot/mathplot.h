@@ -293,31 +293,31 @@ struct mpRange
     }
 
     /// Initialize min and max
-    void Set(T _value)
+    void Set(T value_)
     {
-      min = _value;
-      max = _value;
+      min = value_;
+      max = value_;
     }
 
     /// Set min, max function
-    void Set(T _min, T _max)
+    void Set(T min_, T max_)
     {
-      min = _min;
-      max = _max;
+      min = min_;
+      max = max_;
     }
 
     /// Set min function, correct max
-    void SetMin(T _min)
+    void SetMin(T min_)
     {
-      min = _min;
+      min = min_;
       if (max < min)
         max = min;
     }
 
     /// Set max function, correct min
-    void SetMax(T _max)
+    void SetMax(T max_)
     {
-      max = _max;
+      max = max_;
       if (min > max)
         min = max;
     }
@@ -338,7 +338,7 @@ struct mpRange
     }
 
     /// Check if this mpRange has been assigned any values
-    bool IsSet()
+    [[nodiscard]] bool IsSet() const
     {
       return ((min != 0) || (max != 0));
     }
@@ -357,14 +357,14 @@ struct mpRange
     }
 
     /** Update range with new min and max values if this expand the range
-     * If _min < min then min = _min and if _max > max then max = _max
+     * If min_ < min then min = min_ and if max_ > max then max = max_
      */
-    void Update(T _min, T _max)
+    void Update(T min_, T max_)
     {
-      if (_min < min)
-        min = _min;
-      if (_max > max)
-        max = _max;
+      if (min_ < min)
+        min = min_;
+      if (max_ > max)
+        max = max_;
     }
 
     /** Update range with new range values if this expand the range
@@ -564,10 +564,10 @@ struct mpFloatRectSimple
 
   /**
    * Construct a simple rectangular box
-   * @param _x range over x direction
-   * @param _y range over y direction
+   * @param x_ range over x direction
+   * @param y_ range over y direction
    */
-  mpFloatRectSimple(mpRange<double> _x, mpRange<double> _y) : x(_x), y(_y) { };
+  mpFloatRectSimple(const mpRange<double> x_, const mpRange<double> y_) : x(x_), y(y_) { };
 
   /** Is point inside this bounding box?
    * @param px: point on x-axis
@@ -598,6 +598,14 @@ struct mpFloatRectSimple
     x.Set(px, px);
     y.Set(py, py);
   }
+};
+
+/// Result of mpWindow::GetClosestPlot: the colour and data-space
+/// coordinates of the plot point closest to a given pixel.
+struct mpPlotHit
+{
+  wxColour colour;      //!< pen colour of the matched plot layer
+  wxRealPoint coords;   //!< data-space (x, y) of the closest point
 };
 
 /** Command IDs used by mpWindow
@@ -1355,6 +1363,13 @@ class WXDLLIMPEXP_MATHPLOT mpInfoCoords: public mpInfoLayer
     /** Default destructor */
     ~mpInfoCoords() override = default;
 
+    /** Type of info coordinates to be displayed (axis, closest series, or all series) */
+    enum infoCoordType
+    {
+      infoCoord_axis,             //!< Show axis coordinates at mouse position
+      infoCoord_closestSeries,    //!< Show the X and Y value of the closest series
+      infoCoord_allSeries         //!< Show the Y-values of all series that intersect with a vertical line drawn at the mouse position
+    };
 
     /** Update the content of the info box. Used to update coordinates.
      @param w parent mpWindow from which to obtain information
@@ -1399,16 +1414,26 @@ class WXDLLIMPEXP_MATHPLOT mpInfoCoords: public mpInfoLayer
 
     /** Set the series coordinates of the mouse position (if tractable set)
      */
-    void SetSeriesCoord(bool show)
+    [[deprecated("Deprecated, use SetInfoCoordType instead")]]
+    void SetSeriesCoord(const bool show)
     {
-      m_series_coord = show;
+      m_infoCoordType = show ? infoCoord_closestSeries : infoCoord_axis;
     }
-
-    /** Return if we show the series coordinates
-     @return bool */
-    [[nodiscard]] bool IsSeriesCoord() const
+    
+    /** Set the type of info coordinates to be displayed (axis, closest series, or all series)
+     @param type The type of info coordinates to be displayed (axis, closest series, or all series)
+     */
+    void SetInfoCoordType(const infoCoordType type)
     {
-      return m_series_coord;
+      m_infoCoordType = type;
+    }
+    
+    /** Get the type of info coordinates to be displayed (axis, closest series, or all series)
+     @return The type of info coordinates to be displayed (axis, closest series, or all series)
+     */
+    [[nodiscard]] infoCoordType GetInfoCoordType() const
+    {
+      return m_infoCoordType;
     }
 
     /** Get string describing mouse position. Override in your derived class to customize mpInfoCoords display.
@@ -1417,13 +1442,6 @@ class WXDLLIMPEXP_MATHPLOT mpInfoCoords: public mpInfoLayer
     @param yValList Values of Y. If m_series_coord is used, only one value of the closest serie is supplied,
     otherwise mouse position for each Y-axis is supplied */
     virtual wxString GetInfoCoordsText(mpWindow &w, double xVal, std::unordered_map<int, double> yValList);
-
-    /** Pen series for tractable
-     */
-    void SetPenSeries(const wxPen &pen)
-    {
-      m_penSeries = pen;
-    }
 
     /** Draw the content of info coords to plot
      @param dc the device context where to plot
@@ -1437,9 +1455,9 @@ class WXDLLIMPEXP_MATHPLOT mpInfoCoords: public mpInfoLayer
     unsigned int m_timeConv = 0;  //!< Time conversion mode used when formatting date/time X values.
     wxCoord m_mouseX = 0;         //!< Last mouse X position in window pixel coordinates.
     wxCoord m_mouseY = 0;         //!< Last mouse Y position in window pixel coordinates.
-    bool m_series_coord = false;      //!< True to show the nearest plotted series value instead of raw mouse Y coordinates.
-    wxPen m_penSeries = {mpColourScheme::Instance().GetDefaultFgColour()};        //!< Pen used to draw the series marker when series-coordinate mode is active.
-
+    infoCoordType m_infoCoordType;        //!< Type of info coordinates to be displayed (axis, closest series, or all series).
+    std::vector<wxColor> m_seriesColors;  //!< Colors of the series in the order they were added to the mpWindow.
+ 
     /** Plot method.
      @param dc the device content where to plot
      @param w the window to plot
@@ -1447,7 +1465,6 @@ class WXDLLIMPEXP_MATHPLOT mpInfoCoords: public mpInfoLayer
     void DoPlot(wxDC &dc, mpWindow &w) override;
 
   private:
-    std::unordered_map<int, double> m_yValList; //!< a list of plot layer id.
 
     DECLARE_DYNAMIC_CLASS_MATHPLOT(mpInfoCoords);
 };
@@ -1555,6 +1572,40 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLegend: public mpInfoLayer
       return m_showSeriesValues && IsVisible();
     }
 
+    /** Set if the intersection of the series with the vertical cursor shall be indicated
+     @param enable Set if enabled */
+    void IndicateSeriesIntersection(const bool enable)
+    {
+      m_indicateSeriesIntersection = enable;
+    }
+
+    /** Make the vertical cursor follow the mouse position.
+     *  No position is needed in this mode. */
+    void SetVerticalCursorFollowMouse();
+
+    /** Place the vertical cursor at a fixed position and show the series values.
+     *  @param posX Fractional x position in the plot area, clamped to [0, 1] */
+    void SetVerticalCursorFixed(double posX);
+
+    /// Enumeration for vertical cursor mode, which determines how the vertical cursor is positioned for series intersection indication.
+    enum VerticalCursorMode
+    {
+       CursorMode_mouse, //!< Vertical cursor is at mouse position
+       CursorMode_fixed  //!< Vertical cursor is at fixed position
+    };
+
+    /** Get the current vertical cursor mode.
+     *  @return Cursor mode */
+    [[nodiscard]] VerticalCursorMode GetVerticalCursorMode() const
+    {
+      return m_verticalCursorMode;
+    }
+
+    /** Get the current x position (in pixels) of the vertical cursor.
+     *  Defined out-of-line in mathplot.cpp because it dereferences mpWindow,
+     *  which is only forward-declared at this point in the header. */
+    [[nodiscard]] wxCoord GetVerticalCursorX() const;
+
     /** Checks if mouse is inside legend and if it hovers the header or any of the series
      * If a series is hovered, return its index. If the header is hovered, return HitHeader,
      * otherwise return HitNone
@@ -1616,6 +1667,9 @@ class WXDLLIMPEXP_MATHPLOT mpInfoLegend: public mpInfoLayer
     int m_maxSeriesValueWidth = 0;          //!< Keep track of the widest series value text
     bool m_enableSeriesValues = false;          //!< Enables to show series values in legend
     bool m_showSeriesValues = false;            //!< Shall series values be drawn to plot
+    bool m_indicateSeriesIntersection;            //!< Shall we indicate the intersection of the series and the vertical cursor with a circle marker
+    VerticalCursorMode m_verticalCursorMode;      //!< How shall we position the vertical cursor for series intersection indication (at mouse or at fixed position)
+    double m_verticalCursorPosX;                  //!< X position of the vertical cursor relative to the plot area (0 = left, 1 = right). Only used if m_verticalCursorMode is CursorMode_fixed.
 
     /**
      * Create/update the bitmap image of this legend.
@@ -1988,10 +2042,10 @@ class WXDLLIMPEXP_MATHPLOT mpFX: public mpFunction
      double (mpFX::*pDoGetY)(double x);  //!< Pointer to the active DoGetY Y-evaluation function.
 
     /** Layer plot handler.
-      This implementation will plot the function in the visible area and
-      put a label according to the alignment specified.
-      */
-     void DoPlot(wxDC &dc, mpWindow &w) override;
+     This implementation will plot the function in the visible area and
+     put a label according to the alignment specified.
+     */
+    void DoPlot(wxDC &dc, mpWindow &w) override;
 
     /**
      * Definition of the DoGetY function without log
@@ -2271,6 +2325,7 @@ class WXDLLIMPEXP_MATHPLOT mpFXYVector: public mpFXY
     {
       return m_reserveXY;
     }
+
     /**
      * Calculates the start and end index which shall be used when iterating the data. If all X values
      * are monotonic (like a time series), the indices can be calculated using binary search
@@ -2283,11 +2338,17 @@ class WXDLLIMPEXP_MATHPLOT mpFXYVector: public mpFXY
    @param y Returns Y value
    @returns false when there are no more points (normally true)
    */
-    bool GetNextXY(double *x, double *y) override;
+   bool GetNextXY(double *x, double *y) override;
+
+  /** Draw the point added if there is in bound
+   * @param x X value
+   * @param y Y value
+   */
+   void DrawAddedPoint(double x, double y);
 
   /** Returns the actual minimum X data (loaded in SetData).
-       */
-    double GetMinX() override
+   */
+    double GetMinX()override
     {
       if (m_ViewAsBar)
       {
@@ -2300,16 +2361,16 @@ class WXDLLIMPEXP_MATHPLOT mpFXYVector: public mpFXY
       }
     }
 
-    /** Returns the actual minimum Y data (loaded in SetData).
-     */
-    double GetMinY() override
+  /** Returns the actual minimum Y data (loaded in SetData).
+ */
+  double GetMinY() override
     {
       return m_rangeY.min;
     }
 
-    /** Returns the actual maximum X data (loaded in SetData).
-     */
-    double GetMaxX() override
+  /** Returns the actual maximum X data (loaded in SetData).
+   */
+  double GetMaxX() override
     {
       if(m_ViewAsBar)
       {
@@ -2322,41 +2383,32 @@ class WXDLLIMPEXP_MATHPLOT mpFXYVector: public mpFXY
       }
     }
 
-    /** Returns the actual maximum Y data (loaded in SetData).
-     */
-    double GetMaxY() override
+  /** Returns the actual maximum Y data (loaded in SetData).
+   */
+  double GetMaxY() override
     {
       return m_rangeY.max;
     }
-
   protected:
     std::vector<double> m_xs;    //!< internal copy of the set of data on x direction
     std::vector<double> m_ys;    //!< internal copy of the set of data on y direction
-    bool m_isMonotonicX = false;         //!< Indicates if all all X values are monotonic, i.e increasing, which enables binary search
-    int m_reserveXY = 0;             //!< Memory reserved for m_xs and m_ys. Default 1000
-    size_t m_index = 0;              //!< The internal counter for the "GetNextXY" interface
-    size_t m_endIndex = 0;           //!< The end index indicating the last point inside plot area
+    bool m_isMonotonicX = false; //!< Indicates if all all X values are monotonic, i.e increasing, which enables binary search
+    int m_reserveXY = 1000;      //!< Memory reserved for m_xs and m_ys. Default 1000
+    size_t m_index = 0;          //!< The internal counter for the "GetNextXY" interface
+    size_t m_endIndex = 0;       //!< The end index indicating the last point inside plot area
     mpRange<double> m_rangeX;    //!< Range min and max on x axis
-    double m_lastX = 0.0;              //!< Last x-coordinate point added
+    double m_lastX = 0.0;        //!< Last x-coordinate point added
     mpRange<double> m_rangeY;    //!< Range min and max on y axis
-    double m_lastY = 0.0;              //!< Last y-coordinate point added
+    double m_lastY = 0.0;        //!< Last y-coordinate point added
 
 
-
-
-    /** Draw the point added if there is in bound
-     * @param x X value
-     * @param y Y value
-     */
-    void DrawAddedPoint(double x, double y);
 
   private:
     /** Initialize the limits for the first point
      */
     void First_Point(double x, double y);
 
-    /** Compute the min/max values as well as the smallest distant between two
-     * neighbor points
+    /** Compute the min/max values as well as the smallest distant between two neighbor points
      */
     static void Check_Limit(double val, mpRange<double> *range, double *last, double *delta);
 
@@ -2765,6 +2817,21 @@ class WXDLLIMPEXP_MATHPLOT mpPieChart: public mpChart
 class WXDLLIMPEXP_MATHPLOT mpScale: public mpLayer
 {
   public:
+    /** Group of properties, derived from the axis step size and range, that
+     control how scale labels are formatted.
+     Compute with mpScale::ComputeScaleConstraints() and pass to
+     mpScale::FormatLabelValue() / mpScale::GetLabelWidth().
+     */
+    struct mpScaleConstraints
+    {
+      double step = 0.0;          //!< Step size between axis ticks
+      double maxAxisValue = 0.0;  //!< Maximum absolute value visible on the axis
+      bool UseScientific = false; //!< Whether to use scientific notation
+      int SignificantDigits = 0;  //!< Significant digits for scientific notation
+      int DecimalDigits = 0;      //!< Decimal digits for fixed notation
+      double EpsilonScale = 0.0;  //!< Values with a smaller magnitude are shown as "0"
+    };
+
     /** Full constructor.
      @param name Label to plot by the ruler
      @param flags Set the position of the scale with respect to the window.
@@ -2998,6 +3065,22 @@ class WXDLLIMPEXP_MATHPLOT mpScale: public mpLayer
       return m_CoordIsAlwaysVisible;
     }
 
+    /**
+     * Compute the scale constraints for the given step size and axis range.
+     * @param step Step size between axis ticks
+     * @param maxAxisValue Maximum absolute value visible on the axis
+     * @return The computed constraints, ready to pass to FormatLabelValue()
+     */
+    static mpScaleConstraints ComputeScaleConstraints(double step, double maxAxisValue);
+
+    /** Formats a label value to a string
+     Use m_ScaleConstraints, so this structure must be up to date
+     @param value The value to be formated
+     @param constraints Scale constraints describing the label format
+     @return Label name
+     */
+    wxString FormatLabelValue(double value, const mpScaleConstraints &constraints);
+
   protected:
     static constexpr wxCoord kTickSize = 4;       //!< Length of tick line
     static constexpr wxCoord kAxisExtraSpace = 6; //!< Extra space for axis to make it look good
@@ -3019,10 +3102,8 @@ class WXDLLIMPEXP_MATHPLOT mpScale: public mpLayer
     /// @param w Current window
     virtual int GetOrigin(mpWindow &w) = 0;
 
-    /** Calculate a 'nice' label step size for the given dataset and desired
-     pixel spacing. Label step
-     * size are considered nice if they are 1, 2, 5 or 10 raised to an
-     appropriate power of 10.
+    /** Calculate a 'nice' label step size for the given dataset and desired pixel spacing. Label step
+     * size are considered nice if they are 1, 2, 5 or 10 raised to an appropriate power of 10.
      @param scale The scale of the axis, denoted in [pixels / data value]
      @param minLabelSpacing The minimum wanted label spacing in pixels
      @return The 'nice' step size for the interval
@@ -3038,13 +3119,6 @@ class WXDLLIMPEXP_MATHPLOT mpScale: public mpLayer
      */
     virtual void DrawScaleName(wxDC &dc, mpWindow &w, int origin, int labelSize) = 0;
 
-    /** Formats a label value to a string
-     Use m_ScaleConstraints, so this structure must be up to date
-     @param value The value to be formated
-     @return Label name
-     */
-    wxString FormatLabelValue(double value);
-
     /** Formats a value to a string used on a log axis
      @param n The value to be formated
      @return Label name for log axis
@@ -3052,12 +3126,12 @@ class WXDLLIMPEXP_MATHPLOT mpScale: public mpLayer
     static wxString FormatLogValue(double n);
 
     /** Get label text width for a given value
-     Use m_ScaleConstraints, so this structure must be up to date
      @param value Data value
      @param dc Current dc
+     @param constraints Scale constraints describing the label format
      @return Label width
      */
-    int GetLabelWidth(double value, const wxDC &dc);
+    int GetLabelWidth(double value, const wxDC &dc, const mpScaleConstraints &constraints);
 
     /** Checks if scientific notation shall be used on the labels
      @param maxAxisValue absolute value of the visible axis
@@ -3077,23 +3151,6 @@ class WXDLLIMPEXP_MATHPLOT mpScale: public mpLayer
      @return Number of decimal digits
      */
     static int GetDecimalDigits(double step);
-
-    /**
-     * This structure group all properties needed to draw scale
-     */
-    struct {
-      double step;
-      double maxAxisValue;
-      bool UseScientific;
-      int SignificantDigits;
-      int DecimalDigits;
-      double EpsilonScale;
-    } m_ScaleConstraints{};
-
-    /**
-     * Initialize and compute properties of m_ScaleConstraints structure.
-     */
-    void ComputeScaleConstraints(double step, double maxAxisValue);
 
   private:
     DECLARE_DYNAMIC_CLASS_MATHPLOT(mpScale);
@@ -3437,9 +3494,10 @@ class WXDLLIMPEXP_MATHPLOT mpWindow: public wxWindow
      @param alsoDeleteObject If set to true, the mpLayer objects will be also "deleted", not just removed from the internal list.
      @param func Select type of plot
      @param refreshDisplay States whether to refresh the display (UpdateAll) after removing the layers.
+     @param refreshConfig States whether to refresh the config window (if exist)
      See DelLayer() for more infos
      */
-    void DelAllPlot(mpDeleteAction alsoDeleteObject, mpFunctionType func = mpfAllType, bool refreshDisplay = true);
+    void DelAllPlot(mpDeleteAction alsoDeleteObject, mpFunctionType func = mpfAllType, bool refreshDisplay = true, bool refreshConfig = true);
 
     /** Remove all extra y axis after the selected y axis.
      @param alsoDeleteObject If set to true, the mpLayer objects will be also "deleted", not just removed from the internal list.
@@ -3489,7 +3547,7 @@ class WXDLLIMPEXP_MATHPLOT mpWindow: public wxWindow
      * Return the serie n
      * If the serie not exist then create it
      * @param n the number of the series
-     * @param name the name to give to the series in case we create it
+     * @param name the name to give to the series in case we create it.
      * @param create if true and the series doesn't exist, then we'll create it.
      * @return the existing or created series. NULL if not found or not created.
      */
@@ -3499,11 +3557,10 @@ class WXDLLIMPEXP_MATHPLOT mpWindow: public wxWindow
      * Search the point of the layer plot nearest a point
      * @param ix x-coordinate
      * @param iy y-coordinate
-     * @param xnear Return the x value of the plot
-     * @param ynear Return the y value of the plot
-     * @return A pointer to the plot closest to the point
+     * @return An mpPlotHit (colour + data-space coordinates) of the closest
+     *         plot point, or std::nullopt if no plot is near the point.
      */
-    mpLayer* GetClosestPlot(wxCoord ix, wxCoord iy, double *xnear, double *ynear);
+    std::optional<mpPlotHit> GetClosestPlot(wxCoord ix, wxCoord iy);
 
     /*! Get the layer by its name (case sensitive).
      @param name The name of the layer to retrieve
@@ -4514,17 +4571,20 @@ class WXDLLIMPEXP_MATHPLOT mpWindow: public wxWindow
 #endif // MP_ENABLE_CONFIG
 
     /**
-     * Refresh the config window if present
+     * Refresh the config window if present. Never creates or shows the dialog;
+     * if no config window exists yet it simply returns.
      * @param layerType the type of layer to see the good page in the window
      * @param param specific parameter for the page
-     * @param show if true, the window is shown in any cases
      */
-    void RefreshConfigWindow(mpLayerType layerType, int param = 0, bool show = false);
+    void RefreshConfigWindow(mpLayerType layerType, int param = 0);
 
     /**
-     * Opens configuration window
+     * Opens the configuration window, creating it lazily on first use.
+     * @param layerType optional layer type to select the matching page.
+     *                  mpLAYER_UNDEF (default) keeps the last shown page.
+     * @param param specific parameter for the page (e.g. series index)
      */
-    void OpenConfigWindow();
+    void OpenConfigWindow(mpLayerType layerType = mpLAYER_UNDEF, int param = 0);
 
     /**
      * Deletes configuration window
