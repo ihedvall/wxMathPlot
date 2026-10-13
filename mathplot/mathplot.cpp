@@ -3667,6 +3667,8 @@ void mpWindow::OnMouseMove(wxMouseEvent &event)
     {
       m_InfoLegend->ShowSeriesValues(false);
       requestUpdateAll = true;
+    } else {
+      requestUpdateAll = true;
     }
   }
 
@@ -3844,14 +3846,13 @@ void mpWindow::OnMouseLeave(wxMouseEvent &event)
       m_InfoLegend->m_selectedSeries = nullptr;
       m_InfoLegend->ShowDraggedSeries(false);
       mpInfoLegend::RestoreAxisHighlighting(*this);
-      needUpdateAll = true;
     }
 
     if ((m_InfoLegend->GetVerticalCursorMode() == mpInfoLegend::CursorMode_mouse) && m_InfoLegend->IsSeriesValuesShown())
     {
       m_InfoLegend->ShowSeriesValues(false);
-      needUpdateAll = true;
     }
+    needUpdateAll = true;
   }
 
   if (m_movingInfoLayer)

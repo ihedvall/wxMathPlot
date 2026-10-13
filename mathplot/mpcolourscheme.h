@@ -60,6 +60,9 @@ public:
  }
 
  [[nodiscard]] wxColour GetIndexColour(size_t index) const;
+ [[nodiscard]] size_t GetNofIndexColours() const {
+   return m_line_colours.size();
+ }
  [[nodiscard]] std::string_view GetIndexColourName(size_t index) const;
 
  [[nodiscard]] wxPen GetLinePen(size_t line_index) const;

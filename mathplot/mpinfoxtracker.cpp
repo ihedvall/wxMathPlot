@@ -16,7 +16,7 @@ int mpInfoXTracker::GetLegendHitRegion(wxPoint) {
 }
 
 void mpInfoXTracker::DrawContent(wxDC &dc, mpWindow &w) {
-  const double mouseXValue = w.p2x(w.GetMousePosition().x);
+  const double mouseXValue = w.p2x(GetVerticalCursorX());
   DrawXPosition(mouseXValue, dc, w);
   FireXEvent(mouseXValue);
 }
@@ -38,7 +38,7 @@ void mpInfoXTracker::DoPlot(wxDC &dc, mpWindow &w) {
 
 void mpInfoXTracker::DrawXPosition(double x_value, wxDC &dc, mpWindow &win) {
   const auto& scheme = mpColourScheme::Instance();
-  const mpRect bound = win.GetPlotBoundaries(true);
+  const mpRect bound = win.GetPlotBoundaries(false);
 
   // Draw a circle on the series where the vertical line cross it
   size_t y_count = 0;
